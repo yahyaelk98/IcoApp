@@ -1,9 +1,7 @@
 {
   "expo": {
-    "name": "Blank Template (TypeScript)",
-    "slug": "IcoApp",
-    "privacy": "public",
-    "sdkVersion": "36.0.0",
+    "name": "newIcoapp2",
+    "slug": "newIcoapp2",
     "platforms": [
       "ios",
       "android",
