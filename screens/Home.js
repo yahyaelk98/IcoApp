@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Image, Text } from 'react-native';
 // import MenuBar from './MenuBar';
-import HomeMenu from './HomeMenu';
+import HomeMenu from './ThreeDotsMenu';
 //import our Custom Icon menu component
 
 class Home extends Component {

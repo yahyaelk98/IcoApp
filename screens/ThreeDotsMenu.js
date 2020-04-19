@@ -3,7 +3,7 @@ import React from 'react';
 import { View, Image, TouchableOpacity ,Text } from 'react-native';
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 
-class HomeMenu extends React.PureComponent {
+class ThreeDotsMenu extends React.PureComponent {
     _menu = null;
 
     setMenuRef = ref => {
@@ -43,4 +43,4 @@ class HomeMenu extends React.PureComponent {
     }
 }
 
-export default HomeMenu;
+export default ThreeDotsMenu;
