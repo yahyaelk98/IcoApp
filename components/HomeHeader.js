@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import {  View, Image } from 'react-native';
-import ThreeDotsMenu from '../screens/ThreeDotsMenu';
+import ThreeDotsMenu from './ThreeDotsMenu';
 import { Card } from 'react-native-shadow-cards';
 
 
 
 class HomeHeader extends Component {
-
-
     render() {
         return (
             <Card style={{ padding: ('5%'), margin: ('10%'), marginBottom: ('1%') }}>
@@ -18,15 +16,8 @@ class HomeHeader extends Component {
                     />
                     <ThreeDotsMenu />
                 </View>
-
             </Card>
         );
     }
-
-
-
 }
-
-
-
 export default HomeHeader;
