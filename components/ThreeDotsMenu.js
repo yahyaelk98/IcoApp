@@ -19,6 +19,7 @@ class ThreeDotsMenu extends React.PureComponent {
     };
 
     render() {
+        const { width } = Dimensions.get('window');
         const MENU_SIZE = 30;
         const ICON_FONT_SIZE_NORMAL= width*0.05;
 
