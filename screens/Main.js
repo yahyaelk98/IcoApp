@@ -4,6 +4,7 @@ import { ImageBackground, StyleSheet, View, Image, Text } from 'react-native';
 import { Card } from 'react-native-shadow-cards';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import {LinearGradient} from "expo-linear-gradient";
 //Import de componentes locales
 import HomeHeader from '../components/HomeHeader';
 import IconComponent from '../components/IconComponent';
@@ -52,7 +53,8 @@ function DetailsScreen({ navigation ,route}) {
 function Home({ navigation }) {
     return (
         // Imagen de fondo en principio es un degradado de naranjas
-        <ImageBackground source={require('../assets/background.jpg')} style={{ width: '100%', height: '100%' }}>
+        //<ImageBackground source={require('../assets/background.jpg')} style={{ width: '100%', height: '100%' }}>
+        <LinearGradient colors={['#e12406', '#f65511', '#ff8311']} style={{  width: '100%', height: '100%' }}>
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                 {/* Cabezera de la pantalla inicial */}
                 <HomeHeader />
@@ -74,7 +76,8 @@ function Home({ navigation }) {
                     </View>
                 </Card>
             </View>
-        </ImageBackground>
+        </LinearGradient>
+        //</ImageBackground>
     );
 }
 
