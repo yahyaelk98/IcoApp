@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { View, Image, TouchableOpacity ,Text } from 'react-native';
+import { View, Image, TouchableOpacity ,Text, Dimensions  } from 'react-native';
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 
 class ThreeDotsMenu extends React.PureComponent {
@@ -19,21 +19,24 @@ class ThreeDotsMenu extends React.PureComponent {
     };
 
     render() {
+        const MENU_SIZE = 30;
+        const ICON_FONT_SIZE_NORMAL= width*0.05;
+
         return (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                
                 <TouchableOpacity  onPress={() => this.showMenu()}>
-                    <Image  style={{ width: 30, height: 30 }}
+                    <Image  style={{ width: MENU_SIZE, height: MENU_SIZE }}
                     source={require('../assets/imgHome/menu.png')} />
                 </TouchableOpacity >
                 <Menu ref={this.setMenuRef} >
                     <MenuItem  onPress={this.hideMenu}> 
-                        <Text style={{ fontSize: 20 }}>
+                        <Text style={{ fontSize: ICON_FONT_SIZE_NORMAL }}>
                                 Idioma
                         </Text>
                     </MenuItem>
                     <MenuItem onPress={this.hideMenu}> 
-                        <Text style={{ fontSize: 20 }}>
+                        <Text style={{ fontSize: ICON_FONT_SIZE_NORMAL }}>
                                 Modo simple
                         </Text></MenuItem>
                   

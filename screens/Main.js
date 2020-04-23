@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ImageBackground, StyleSheet, View, Image, Text } from 'react-native';
+import { ImageBackground, StyleSheet, View, Image, Text, Dimensions} from 'react-native';
 //Import de modulos descargados
 import { Card } from 'react-native-shadow-cards';
 import { NavigationContainer } from '@react-navigation/native';
@@ -51,15 +51,27 @@ function DetailsScreen({ navigation ,route}) {
     -> Carta que une las 6 acciones principales de la app
     Calendario, Medicación, Contacto, Ubicación, Blog del ICO, Perfil  */
 function Home({ navigation }) {
+    //Constantes de tamano responsive
+    const { width , height} = Dimensions.get('window');
+    const MAIN_CARD_WIDTH = width*0.9;
+    const MAIN_CARD_HEIGHT = height*0.7;
+    const NORMAL_MARGIN = '5%';
+    const MAX_SIZE = '100%';
+    //Colors gradient constant
+    const GRADIENT_COLOR_A = '#e12406';
+    const GRADIENT_COLOR_B = '#f65511';
+    const GRADIENT_COLOR_C = '#ff8311';
+
     return (
+        
         // Imagen de fondo en principio es un degradado de naranjas
         //<ImageBackground source={require('../assets/background.jpg')} style={{ width: '100%', height: '100%' }}>
-        <LinearGradient colors={['#e12406', '#f65511', '#ff8311']} style={{  width: '100%', height: '100%' }}>
+        <LinearGradient colors={[GRADIENT_COLOR_A, GRADIENT_COLOR_B, GRADIENT_COLOR_C]} style={{  width: MAX_SIZE, height: MAX_SIZE }}>
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                 {/* Cabezera de la pantalla inicial */}
                 <HomeHeader />
                 {/* Crear conjunto de componentes con su icono y texto  */}
-                <Card style={{ padding: ('5%'), margin: ('5%') }}>
+                <Card style={{width:MAIN_CARD_WIDTH, height:MAIN_CARD_HEIGHT, padding: NORMAL_MARGIN, margin: NORMAL_MARGIN }}>
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <View style={{ flexDirection: 'row' }}>
                             <IconComponent navigation={navigation} text="Calendario" iconPath={require("../assets/imgHome/calendarioICO.png")} />
