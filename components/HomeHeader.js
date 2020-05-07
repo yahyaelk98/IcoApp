@@ -8,6 +8,7 @@ import { Card } from 'react-native-shadow-cards';
 class HomeHeader extends Component {
 
     render() {
+        const {navigation} = this.props;
         //Constantes de tamano responsive
         const { width, height } = Dimensions.get('window');
         const ICO_IMAGE_HEADER_WIDTH = width*0.7;
@@ -23,7 +24,7 @@ class HomeHeader extends Component {
                         style={{ marginLeft: MINIMUN_MARGIN, width: ICO_IMAGE_HEADER_WIDTH , height: ICO_IMAGE_HEADER_HEIGHT }}
                         source={require('../assets/imgHome/logo.png')}
                     />
-                    <ThreeDotsMenu />
+                    <ThreeDotsMenu navigation={navigation} />
                 </View>
             </Card>
         );

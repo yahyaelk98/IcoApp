@@ -8,6 +8,7 @@ import {LinearGradient} from "expo-linear-gradient";
 //Import de componentes locales
 import HomeHeader from '../components/HomeHeader';
 import IconComponent from '../components/IconComponent';
+import ScreenIdioma from "./Idioma";
 
 
 
@@ -27,6 +28,7 @@ function Navigator() {
                     }}
                 />
                 <Stack.Screen name="Details" component={DetailsScreen}  options={{ title: 'Details' }}/>
+                <Stack.Screen name="Idioma" component={ScreenIdioma} options={{title: 'Idioma', headerShown: false}}/>
             </Stack.Navigator>
         </NavigationContainer>
     );
@@ -69,7 +71,7 @@ function Home({ navigation }) {
         <LinearGradient colors={[GRADIENT_COLOR_A, GRADIENT_COLOR_B, GRADIENT_COLOR_C]} style={{  width: MAX_SIZE, height: MAX_SIZE }}>
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                 {/* Cabezera de la pantalla inicial */}
-                <HomeHeader />
+                <HomeHeader navigation={navigation}/>
                 {/* Crear conjunto de componentes con su icono y texto  */}
                 <Card style={{width:MAIN_CARD_WIDTH, height:MAIN_CARD_HEIGHT, padding: NORMAL_MARGIN, margin: NORMAL_MARGIN }}>
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
@@ -92,5 +94,3 @@ function Home({ navigation }) {
         //</ImageBackground>
     );
 }
-
-
