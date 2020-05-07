@@ -5,6 +5,7 @@ import ThreeDotsMenu from "../components/ThreeDotsMenu";
 import {Card} from "react-native-shadow-cards";
 import ButtonBack from "./ButtonBack";
 import {RadioButton} from "react-native-paper";
+import I18n from '../idiomas/idioma'
 
 export default function ScreenIdioma({navigation}) {
 
@@ -19,7 +20,7 @@ export default function ScreenIdioma({navigation}) {
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                         <ButtonBack navigation={navigation}/>
                         <View style={{justifyContent: 'center', alignItems: 'center', flex: 8}}>
-                            <Text style={styles.textHeader}>Cambio de Idioma</Text>
+                            <Text style={styles.textHeader}>{I18n.t("IDIOMA_header")}</Text>
                         </View>
                         <ThreeDotsMenu navigation={navigation}/>
                     </View>
