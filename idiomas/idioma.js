@@ -5,7 +5,7 @@ import es from "./es";
 import cat from "./cat";
 import en from "./en";
 
-I18n.locale = "cat";
+I18n.locale = "es";
 
 I18n.fallbacks = true;
 I18n.translations = {
