@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { View, Image, Text,TouchableOpacity, Dimensions} from 'react-native';
-
+import I18n from '../idiomas/idioma';
 
 
 
 class IconComponent extends Component {
+
+
     goTo(){
-        this.props.navigation.navigate('Details',{title:this.props.text});
+        this.props.navigation.navigate(this.props.title,{titleName:this.props.titleName});
+
     }
 
     render() {
@@ -26,7 +29,7 @@ class IconComponent extends Component {
                     />
                 </TouchableOpacity>
                 <Text style={{ fontSize:ICON_FONT_SIZE_NORMAL }}>
-                    {this.props.text}
+                    {this.props.titleName}
                 </Text>
             </View>
 

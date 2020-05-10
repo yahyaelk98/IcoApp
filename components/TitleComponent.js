@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text} from "react-native";
+import { StyleSheet, View, Text,Dimensions} from "react-native";
 import ThreeDotsMenu from "../components/ThreeDotsMenu";
 import ButtonBack from "./ButtonBack";
 import I18n from '../idiomas/idioma';
@@ -17,9 +17,9 @@ class TitleComponent extends React.Component {
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <ButtonBack navigation={this._navigation} />
                 <View style={{ justifyContent: 'center', alignItems: 'center', flex: 8 }}>
-                    <Text style={styles.textHeader}>{I18n.t(this.titleName)}</Text>
+                    <Text style={styles.textHeader}>{this.titleName}</Text>
                 </View>
-                <ThreeDotsMenu navigation={this._navigation} />
+                <ThreeDotsMenu navigation={this._navigation}  />
             </View>
 
         );
@@ -28,25 +28,30 @@ class TitleComponent extends React.Component {
 }
 export default TitleComponent;
 //Constantes de tamano responsive
+const { width, height } = Dimensions.get('window');
 const MAX_SIZE = '100%';
 const NORMAL_MARGIN = '5%';
 const BIG_MARGIN = '10%';
 const MINIMUN_MARGIN = '1%';
-//Colors gradient constant
-const GRADIENT_COLOR_A = '#e12406';
-const GRADIENT_COLOR_B = '#f65511';
-const GRADIENT_COLOR_C = '#ff8311';
+
+const TEXT_PROFILE_WIDTH = width * 0.3;
+
 
 
 const styles = StyleSheet.create({
     cardHeader: {
-        padding: NORMAL_MARGIN, margin: BIG_MARGIN,
-        marginBottom: MINIMUN_MARGIN, borderWidth: 6,
+        margin: BIG_MARGIN,
+        marginBottom: MINIMUN_MARGIN, 
+        borderWidth: 1,
+        paddingTop: NORMAL_MARGIN, 
         borderColor: '#FFB36B'
     },
     textHeader: {
         textAlign: 'center',
-        fontSize: 24
+        fontSize: 24,
+        borderWidth: 1,
+        borderColor: '#FFF',
+
     },
     linearGradient: {
         width: MAX_SIZE,

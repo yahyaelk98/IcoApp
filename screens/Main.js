@@ -9,6 +9,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import HomeHeader from '../components/HomeHeader';
 import IconComponent from '../components/IconComponent';
 import ScreenIdioma from "./Idioma";
+import ScreenPerfil from "./Perfil";
+import I18n from "../idiomas/idioma";
 
 
 
@@ -28,7 +30,8 @@ function Navigator() {
                     }}
                 />
                 <Stack.Screen name="Details" component={DetailsScreen} options={{ title: 'Details' }} />
-                <Stack.Screen name="Idioma" component={ScreenIdioma} options={{ title: 'Idioma', headerShown: false }} />
+                <Stack.Screen name="PROFILE" component={ScreenPerfil} options={{ titleName: 'PROFILE_HEADER',headerShown: false  }} />
+                <Stack.Screen name="LANGUAGE" component={ScreenIdioma} options={{ titleName: 'LANGUAGE_HEADER', headerShown: false }} />
             </Stack.Navigator>
         </NavigationContainer>
     );
@@ -76,16 +79,16 @@ function Home({ navigation }) {
                 <Card style={{ width: MAIN_CARD_WIDTH, height: MAIN_CARD_HEIGHT, padding: NORMAL_MARGIN, margin: NORMAL_MARGIN }}>
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <View style={{ flexDirection: 'row' }}>
-                            <IconComponent navigation={navigation} text="Calendario" iconPath={require("../assets/imgHome/calendarioICO.png")} />
-                            <IconComponent navigation={navigation} text="Medicación" iconPath={require("../assets/imgHome/medicacionICO.png")} />
+                            <IconComponent navigation={navigation} title="CALENDAR" titleName={I18n.t("CALENDAR_HEADER")} iconPath={require("../assets/imgHome/calendarioICO.png")} />
+                            <IconComponent navigation={navigation} title="MEDICATION" titleName={I18n.t("MEDICATION_HEADER")} iconPath={require("../assets/imgHome/medicacionICO.png")} />
                         </View>
                         <View style={{ flexDirection: 'row' }}>
-                            <IconComponent navigation={navigation} text="Contactar" iconPath={require("../assets/imgHome/telefonoICO.png")} />
-                            <IconComponent navigation={navigation} text="Ubicación" iconPath={require("../assets/imgHome/ubicacionICO.png")} />
+                            <IconComponent navigation={navigation} title="CONTACT" titleName={I18n.t("CONTACT_HEADER")} iconPath={require("../assets/imgHome/telefonoICO.png")} />
+                            <IconComponent navigation={navigation} title="HOSPITAL" titleName={I18n.t("HOSPITAL_HEADER")} iconPath={require("../assets/imgHome/ubicacionICO.png")} />
                         </View>
                         <View style={{ flexDirection: 'row' }}>
-                            <IconComponent navigation={navigation} text="ICOBlog" iconPath={require("../assets/imgHome/ICOBlog.png")} />
-                            <IconComponent navigation={navigation} text=" Ver perfil" iconPath={require("../assets/imgHome/logoHome.png")} />
+                            <IconComponent navigation={navigation} title="BLOG" titleName={I18n.t("BLOG_HEADER")} iconPath={require("../assets/imgHome/ICOBlog.png")} />
+                            <IconComponent navigation={navigation} title="PROFILE" titleName={I18n.t("PROFILE_HEADER")} iconPath={require("../assets/imgHome/logoHome.png")} />
                         </View>
                     </View>
                 </Card>
