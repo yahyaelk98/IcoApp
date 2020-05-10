@@ -1,7 +1,7 @@
 import React from 'react';
 import {Image, TouchableOpacity, View} from "react-native";
 
-export default class ButtonBack extends React.Component {
+export default class ButtonBack extends React.PureComponent {
 
     _navigation;
 

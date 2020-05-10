@@ -1,15 +1,14 @@
 import React, {useState} from 'react';
 import {LinearGradient} from "expo-linear-gradient";
 import {Image, StyleSheet, View, Text} from "react-native";
-import ThreeDotsMenu from "../components/ThreeDotsMenu";
 import {Card} from "react-native-shadow-cards";
-import ButtonBack from "./ButtonBack";
 import {RadioButton} from "react-native-paper";
-import I18n from '../idiomas/idioma'
+import TitleComponent from '../components/TitleComponent';
 
-export default function ScreenIdioma({navigation}) {
+export default function ScreenIdioma({navigation,route}) {
 
     const [idioma, setIdioma] = useState("es");
+    const { titleName } = route.params;
 
     return (
         <LinearGradient colors={[GRADIENT_COLOR_A, GRADIENT_COLOR_B, GRADIENT_COLOR_C]}
@@ -17,13 +16,7 @@ export default function ScreenIdioma({navigation}) {
             <View style={{alignItems: 'center', justifyContent: 'center'}}>
                 {/* HEADER */}
                 <Card style={styles.cardHeader}>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                        <ButtonBack navigation={navigation}/>
-                        <View style={{justifyContent: 'center', alignItems: 'center', flex: 8}}>
-                            <Text style={styles.textHeader}>{I18n.t("IDIOMA_header")}</Text>
-                        </View>
-                        <ThreeDotsMenu navigation={navigation}/>
-                    </View>
+                    <TitleComponent titleName={titleName} navigation={navigation}/>
                 </Card>
                 <Card style={styles.cardIdiomas}>
                     <View style={{flexDirection: 'row'}}>

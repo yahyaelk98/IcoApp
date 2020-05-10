@@ -21,7 +21,7 @@ class ThreeDotsMenu extends React.PureComponent {
 
     onClickIdioma = () => {
         this._menu.hide();
-        this._navigation.navigate('Idioma');
+        this._navigation.navigate('Idioma',{ titleName: 'IDIOMA_header'});
     };
 
     render() {
