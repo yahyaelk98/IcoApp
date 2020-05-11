@@ -1,14 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { LinearGradient } from "expo-linear-gradient";
-import { Image, StyleSheet, View, Text, Dimensions, TouchableOpacity } from "react-native";
+import { Image, StyleSheet, View, Text, Dimensions, TouchableOpacity, ActivityIndicator } from "react-native";
+
+
 import { Card } from "react-native-shadow-cards";
-import { RadioButton } from "react-native-paper";
+
+
 import TitleComponent from '../components/TitleComponent';
 
 export default function ScreenPerfil({ navigation, route }) {
 
     const [idioma, setIdioma] = useState("es");
     const { titleName } = route.params;
+
+    const [isLoading, setLoading] = useState(true);
+    const [data, setData] = useState([]);
+
+    //Usamos una API pública para testear usuarios
+    useEffect(() => {
+        fetch('https://randomuser.me/api/')
+            .then((response) => response.json())
+            .then((json) => setData(json.results))
+            .catch((error) => console.error(error))
+            .finally(() => setLoading(false));
+    }, []);
 
     return (
         <LinearGradient colors={[GRADIENT_COLOR_A, GRADIENT_COLOR_B, GRADIENT_COLOR_C]}
@@ -19,35 +34,41 @@ export default function ScreenPerfil({ navigation, route }) {
                     <TitleComponent titleName={titleName} navigation={navigation} />
                 </Card>
                 {/* END HEADER */}
-
-                <Card style={styles.cardPerfil}>
-                    <View style={{
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}>
-                        <Image
-                            source={{ uri: 'https://www.sackettwaconia.com/wp-content/uploads/default-profile.png', }}
-                            style={styles.imagePerfil}
-                        />
-                        <Text style={{ fontSize: ICON_FONT_SIZE_HEADER }}>Pedro González</Text>
-                        <Text style={{ fontSize: ICON_FONT_SIZE_NORMAL, color: '#8F8F8F' }}>Hospital Maria Teresa</Text>
-                        <Text style={styles.profileElement}>pedrinGonzalez@gmail.com</Text>
-                        <Text style={styles.profileElement}>625 54 12 36</Text>
+                {/* Cuando sea false la variable isLoading signifa que ya se ha recibido respuesta
+                /* y se puede mostrar el contenido
+                */}
+                {isLoading ? <ActivityIndicator /> :
+                    <Card style={styles.cardPerfil}>
                         <View style={{
-                            flexDirection: 'row', alignItems: 'center',
+                            alignItems: 'center',
                             justifyContent: 'center'
                         }}>
-                            <Text style={styles.profileElement}>21 anys</Text>
-                            <Text style={{ marginLeft: NORMAL_MARGIN, fontSize: ICON_FONT_SIZE_NORMAL }}>Home</Text>
+                            <Image
+                                source={{ uri: 'https://www.sackettwaconia.com/wp-content/uploads/default-profile.png', }}
+                                style={styles.imagePerfil}
+                            />
+                            {/* Recogemos los datos de manera para hacer pruebas directamente de la respuesta de la API */}
+                            <Text style={{ fontSize: ICON_FONT_SIZE_HEADER }}>{data[0].name.first + " " + data[0].name.last}</Text>
+                            <Text style={{ fontSize: ICON_FONT_SIZE_NORMAL, color: '#8F8F8F' }}>Hospital Maria Teresa</Text>
+                            <Text style={styles.profileElement}>{data[0].email}</Text>
+                            <Text style={styles.profileElement}>{data[0].phone}</Text>
+                            <View style={{
+                                flexDirection: 'row', alignItems: 'center',
+                                justifyContent: 'center'
+                            }}>
+                                <Text style={styles.profileElement}>{data[0].registered.age} años</Text>
+                                <Text style={{ marginLeft: NORMAL_MARGIN, fontSize: ICON_FONT_SIZE_NORMAL }}>{data[0].gender=="male"?"Hombre":"Mujer"}</Text>
+                            </View>
+                            <Separator />
+
+                            <TouchableOpacity>
+                                <Text style={styles.profileButton} >Editar perfil</Text>
+                            </TouchableOpacity>
+                            <Separator />
+
+                            <TouchableOpacity ><Text style={styles.profileButton} >Generar QR</Text></TouchableOpacity>
                         </View>
-                        <Separator />
-
-                        <TouchableOpacity ><Text style={styles.profileButton} >Editar perfil</Text></TouchableOpacity>
-                        <Separator />
-
-                        <TouchableOpacity ><Text style={styles.profileButton} >Generar QR</Text></TouchableOpacity>
-                    </View>
-                </Card>
+                    </Card>}
             </View>
         </LinearGradient>
     );
@@ -115,15 +136,15 @@ const styles = StyleSheet.create({
         fontSize: ICON_FONT_SIZE_NORMAL,
         marginTop: MINIMUN_MARGIN
     },
-     profileButton: {
+    profileButton: {
         fontSize: ICON_FONT_SIZE_NORMAL,
-        backgroundColor:"#007bff",
-        padding:BUTTON_MARGIN,
+        backgroundColor: "#007bff",
+        padding: BUTTON_MARGIN,
         borderRadius: 10,
-        width:BUTTON_PROFILE_WIDTH,
-        height:BUTTON_PROFILE_HEIGHT,
-        textAlignVertical:"center", 
-        color:"#FFF"
+        width: BUTTON_PROFILE_WIDTH,
+        height: BUTTON_PROFILE_HEIGHT,
+        textAlignVertical: "center",
+        color: "#FFF"
     },
     separator: {
         marginVertical: 8,
