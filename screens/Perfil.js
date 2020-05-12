@@ -123,7 +123,6 @@ const styles = StyleSheet.create({
         height: MAIN_CARD_HEIGHT,
         padding: NORMAL_MARGIN,
         margin: NORMAL_MARGIN,
-
     },
     imagePerfil: {
         width: PROFILE_IMAGE_WIDTH,
