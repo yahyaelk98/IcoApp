@@ -12,6 +12,7 @@ import ScreenIdioma from "./Idioma";
 import ScreenPerfil from "./Perfil";
 import ScreenMedicacion from "./Medicacion";
 import I18n from "../idiomas/idioma";
+import ScreenContactos from "./Contactos";
 
 
 
@@ -34,6 +35,7 @@ function Navigator() {
                 <Stack.Screen name="PROFILE" component={ScreenPerfil} options={{ titleName: 'PROFILE_HEADER',headerShown: false  }} />
                 <Stack.Screen name="LANGUAGE" component={ScreenIdioma} options={{ titleName: 'LANGUAGE_HEADER', headerShown: false }} />
                 <Stack.Screen name="MEDICATION" component={ScreenMedicacion} options={{ titleName: 'MEDICATION_HEADER', headerShown: false }} />
+                <Stack.Screen name="CONTACT" component={ScreenContactos} options={{ titleName: 'CONTACT_HEADER', headerShown: false }} />
             </Stack.Navigator>
         </NavigationContainer>
     );
