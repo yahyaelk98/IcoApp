@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import { ImageBackground, StyleSheet, View, Image, Text, Dimensions } from 'react-native';
 //Import de modulos descargados
 import { Card } from 'react-native-shadow-cards';
@@ -69,6 +69,26 @@ function Home({ navigation }) {
     const GRADIENT_COLOR_B = '#f65511';
     const GRADIENT_COLOR_C = '#ff8311';
 
+    const[CALENDAR_HEADER, setCalendarHeader] = useState(I18n.t("CALENDAR_HEADER"));
+    const [MEDICATION_HEADER, setMedicationHeader] = useState(I18n.t("MEDICATION_HEADER"));
+    const [CONTACT_HEADER, setContactHeader] = useState(I18n.t("CONTACT_HEADER"));
+    const [HOSPITAL_HEADER, setHospitalHeader] = useState(I18n.t("HOSPITAL_HEADER"));
+    const [BLOG_HEADER, setBlogHeader] = useState(I18n.t("BLOG_HEADER"));
+    const [PROFILE_HEADER, setProfileHeader] = useState(I18n.t("PROFILE_HEADER"));
+
+    useEffect(() => {
+        //MÉTODO PARA TRADUCIR CADA VEZ QUE SE ACCEDE A ESTA SCREEN
+        navigation.addListener('focus', () => {
+            setCalendarHeader(I18n.t("CALENDAR_HEADER"));
+            setMedicationHeader(I18n.t("MEDICATION_HEADER"));
+            setContactHeader(I18n.t("CONTACT_HEADER"));
+            setHospitalHeader(I18n.t("HOSPITAL_HEADER"));
+            setBlogHeader(I18n.t("BLOG_HEADER"));
+            setProfileHeader(I18n.t("PROFILE_HEADER"));
+        })
+    });
+
+
     return (
 
         // Imagen de fondo en principio es un degradado de naranjas
@@ -81,16 +101,16 @@ function Home({ navigation }) {
                 <Card style={{ width: MAIN_CARD_WIDTH, height: MAIN_CARD_HEIGHT, padding: NORMAL_MARGIN, margin: NORMAL_MARGIN }}>
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <View style={{ flexDirection: 'row' }}>
-                            <IconComponent navigation={navigation} title="CALENDAR" titleName={I18n.t("CALENDAR_HEADER")} iconPath={require("../assets/imgHome/calendarioICO.png")} />
-                            <IconComponent navigation={navigation} title="MEDICATION" titleName={I18n.t("MEDICATION_HEADER")} iconPath={require("../assets/imgHome/medicacionICO.png")} />
+                            <IconComponent navigation={navigation} title="CALENDAR" titleName={CALENDAR_HEADER} iconPath={require("../assets/imgHome/calendarioICO.png")} />
+                            <IconComponent navigation={navigation} title="MEDICATION" titleName={MEDICATION_HEADER} iconPath={require("../assets/imgHome/medicacionICO.png")} />
                         </View>
                         <View style={{ flexDirection: 'row' }}>
-                            <IconComponent navigation={navigation} title="CONTACT" titleName={I18n.t("CONTACT_HEADER")} iconPath={require("../assets/imgHome/telefonoICO.png")} />
-                            <IconComponent navigation={navigation} title="HOSPITAL" titleName={I18n.t("HOSPITAL_HEADER")} iconPath={require("../assets/imgHome/ubicacionICO.png")} />
+                            <IconComponent navigation={navigation} title="CONTACT" titleName={CONTACT_HEADER} iconPath={require("../assets/imgHome/telefonoICO.png")} />
+                            <IconComponent navigation={navigation} title="HOSPITAL" titleName={HOSPITAL_HEADER} iconPath={require("../assets/imgHome/ubicacionICO.png")} />
                         </View>
                         <View style={{ flexDirection: 'row' }}>
-                            <IconComponent navigation={navigation} title="BLOG" titleName={I18n.t("BLOG_HEADER")} iconPath={require("../assets/imgHome/ICOBlog.png")} />
-                            <IconComponent navigation={navigation} title="PROFILE" titleName={I18n.t("PROFILE_HEADER")} iconPath={require("../assets/imgHome/logoHome.png")} />
+                            <IconComponent navigation={navigation} title="BLOG" titleName={BLOG_HEADER} iconPath={require("../assets/imgHome/ICOBlog.png")} />
+                            <IconComponent navigation={navigation} title="PROFILE" titleName={PROFILE_HEADER} iconPath={require("../assets/imgHome/logoHome.png")} />
                         </View>
                     </View>
                 </Card>

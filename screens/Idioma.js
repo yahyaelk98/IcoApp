@@ -4,10 +4,11 @@ import {Image, StyleSheet, View, Text} from "react-native";
 import {Card} from "react-native-shadow-cards";
 import {RadioButton} from "react-native-paper";
 import TitleComponent from '../components/TitleComponent';
+import I18n from '../idiomas/idioma';
 
 export default function ScreenIdioma({navigation,route}) {
 
-    const [idioma, setIdioma] = useState("es");
+    const [idioma, setIdioma] = useState(I18n.locale);
     const { titleName } = route.params;
 
     return (
@@ -18,13 +19,15 @@ export default function ScreenIdioma({navigation,route}) {
                 <Card style={styles.cardHeader}>
                     <TitleComponent titleName={titleName} navigation={navigation}/>
                 </Card>
+                {/* END HEADER */}
                 <Card style={styles.cardIdiomas}>
                     <View style={{flexDirection: 'row'}}>
                             <RadioButton
                                 value="es"
                                 status={idioma === "es" ? "checked" : "unchecked"}
                                 onPress={() => {
-                                    setIdioma("es")
+                                    I18n.locale = "es";
+                                    setIdioma("es");
                                 }}
                             />
                         <View style={{flex: 1,justifyContent: 'center', marginLeft: 24}}>
@@ -37,10 +40,11 @@ export default function ScreenIdioma({navigation,route}) {
                 <Card style={styles.cardIdiomas}>
                     <View style={{flexDirection: 'row'}}>
                         <RadioButton
-                            value="es"
+                            value="cat"
                             status={idioma === "cat" ? "checked" : "unchecked"}
                             onPress={() => {
-                                setIdioma("cat")
+                                I18n.locale = "cat";
+                                setIdioma("cat");
                             }}
                         />
                         <View style={{flex: 1,justifyContent: 'center', marginLeft: 24}}>
@@ -53,10 +57,11 @@ export default function ScreenIdioma({navigation,route}) {
                 <Card style={styles.cardIdiomas}>
                     <View style={{flexDirection: 'row'}}>
                         <RadioButton
-                            value="es"
+                            value="en"
                             status={idioma === "en" ? "checked" : "unchecked"}
                             onPress={() => {
-                                setIdioma("en")
+                                I18n.locale = "en";
+                                setIdioma("en");
                             }}
                         />
                         <View style={{flex: 1,justifyContent: 'center', marginLeft: 24}}>
@@ -66,7 +71,6 @@ export default function ScreenIdioma({navigation,route}) {
                         <Text style={{flex: 3,fontSize: 24}}>English</Text>
                     </View>
                 </Card>
-                {/* END HEADER */}
             </View>
         </LinearGradient>
     );

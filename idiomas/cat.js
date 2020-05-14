@@ -5,6 +5,6 @@ export default {
     CALENDAR_HEADER:"Calendari",
     MEDICATION_HEADER:"Medicació",
     BLOG_HEADER:"ICOBlog",
-    CONTACT_HEADER:"Contactar",
+    CONTACT_HEADER:"Contactes",
     HOSPITAL_HEADER:"Hospitals",
 };

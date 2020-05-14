@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
         height: MAX_SIZE
     },
     cardPerfil: {
-        width: MAIN_CARD_WIDTH,
+        //width: MAIN_CARD_WIDTH,
         height: MAIN_CARD_HEIGHT,
         padding: NORMAL_MARGIN,
         margin: NORMAL_MARGIN,

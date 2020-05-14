@@ -2,9 +2,9 @@
 export default {
     LANGUAGE_HEADER: "Change Language",
     PROFILE_HEADER: "Profile",
-    CALENDAR_HEADER:"Calendario",
-    MEDICATION_HEADER:"Medicación",
+    CALENDAR_HEADER:"Calendar",
+    MEDICATION_HEADER:"Medication",
     BLOG_HEADER:"ICOBlog",
-    CONTACT_HEADER:"Contactar",
-    HOSPITAL_HEADER:"Hospitales",
+    CONTACT_HEADER:"Contacts",
+    HOSPITAL_HEADER:"Hospitals",
 };
