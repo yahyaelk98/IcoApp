@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { LinearGradient } from "expo-linear-gradient";
-import { Image, StyleSheet, SectionList, View, Text, Dimensions, TouchableOpacity, ActivityIndicator } from "react-native";
+import { Image, StyleSheet, SectionList, View, Text, Dimensions, TouchableOpacity,Alert,Modal,TouchableHighlight, ActivityIndicator } from "react-native";
 import { Card } from "react-native-shadow-cards";
 import TitleComponent from '../components/TitleComponent';
 import MedicationComponent from '../components/MedicationComponent';
@@ -12,9 +12,9 @@ export default function ScreenPerfil({ navigation, route }) {
     const [isLoading, setLoading] = useState(true);
     const [data, setData] = useState([]);
 
-
     // Render the list
     return (
+        
         <LinearGradient colors={[GRADIENT_COLOR_A, GRADIENT_COLOR_B, GRADIENT_COLOR_C]}
             style={styles.linearGradient}>
             <View style={{ alignItems: 'center' }}>
@@ -79,13 +79,13 @@ export default function ScreenPerfil({ navigation, route }) {
                         },
                     ]}
                     renderItem={({ item }) =>
-                        // <Text style={styles.item}>{item}</Text>
-                        <MedicationComponent
-                            tituloMedicamento={item.titulo}
-                            numeroDeVecesDia={item.nVeces}
-                            periodoDeHoras={item.pHoras}
-                            cantidadDeMedicacion={item.cMedicacion}
-                        />
+                        
+                            <MedicationComponent
+                                tituloMedicamento={item.titulo}
+                                numeroDeVecesDia={item.nVeces}
+                                periodoDeHoras={item.pHoras}
+                                cantidadDeMedicacion={item.cMedicacion}
+                            />
                     }
                     renderSectionHeader={({ section }) =>
                         //Componente de la medicación
@@ -94,16 +94,12 @@ export default function ScreenPerfil({ navigation, route }) {
                     keyExtractor={(item, index) => index}
                 />
             </View>
+          
         </LinearGradient>
 
     );
 
 }
-function Separator() {
-    return <View style={styles.separator} />;
-}
-
-
 
 //Constantes de tamano responsive
 const { width, height } = Dimensions.get('window');
