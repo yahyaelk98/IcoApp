@@ -99,10 +99,6 @@ export default function ScreenContactos({navigation, route}) {
 
 };
 
-//Constantes de tamano responsive
-const {width, height} = Dimensions.get('window');
-const MAIN_CARD_WIDTH = width * 0.9;
-const MAIN_CARD_HEIGHT = height * 0.75;
 
 const NORMAL_MARGIN = '5%';
 const BIG_MARGIN = '10%';
