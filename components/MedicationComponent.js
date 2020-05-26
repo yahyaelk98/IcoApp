@@ -10,13 +10,11 @@ import I18n from "../idiomas/idioma";
 
 class MedicationComponent extends React.Component {
 
-
     tituloMedicamento;
     numeroDeVecesDia;
     periodoDeHoras;
     cantidadDeMedicacion;
     alarmaActiva;
-
 
     //Setear variables de estado para controlar el modal
     state = {
@@ -76,13 +74,17 @@ class MedicationComponent extends React.Component {
         this.TimePicker.close();
     }
 
+    // Si se confirma 
     onConfirm(hour, minute) {
         // Cerrar el selector de horas y minutos
         this.TimePicker.close();
+
         //Ocultar modal de alarma
         this.setModalAlarmaVisible(false);
+
         //Lanzar la notificación
-        this.sendLocalNotification(hour,minute);
+        this._sendNotifications(hour, minute);
+
         // Crear y abrir alert de aviso de alarma
         //Alert de aviso que se ha programado la alarma 
         Alert.alert(
@@ -107,41 +109,50 @@ class MedicationComponent extends React.Component {
         let minute = new Date().getMinutes();
         this.setState({ alarmHour: hour });
         this.setState({ alarmMinutes: minute });
-
     }
 
-    sendLocalNotification(hour,minute) {
-        // Recoger la hora y minutos
-        // const { alarmHour } = this.state;
-        // const { alarmMinutes } = this.state;
+    _sendNotifications = async (alarmHour, alarmMinutes) => {
 
-        // milis = new Date().;
-        let milis = (hour * 3600 + minute * 60);
-        milis = milis * 1000;
-        /* Body de la notificación para poder lanzarla */
+        // Se deberia comprobar que la alarma no está activa para que no esté duplicada
+        // await Notifications.cancelAllScheduledNotificationsAsync();
+
+        // Crear la notificación 
         const localNotification = {
             sound: 'default',
             title: I18n.t("NOTIFICATION_HEADER"),
             body: this.props.cantidadDeMedicacion + I18n.t("DETERMINAT_TEXT") + this.props.tituloMedicamento,
+            android: {
+                sound: true,
+            },
+            ios: {
+                sound: true,
+            },
         };
 
-        /* Esquema de la notificación (Cada cuanto se forma ) */
-        const schedulingOptions = {
-            time: new Date(milis), // Se coloca un dia 0 con los milis marcando la hora que ha puesto el usuario
-            repeat: 'day', // Repetimos esta alarma todos los dias a esa hora
-            // Realmente lo que está pasando es repetir una alarma programada a un dia que no existe, pero la hora si, y la repite cada dia
-            // No se hacen así pero para poder crear algo parecido a una alarma esto es lo que he conseguido
-        }
+        // Formar la fecha que utilizaremos para programar la alarma
+        let fechaActual = Date.now();
+        fechaActual = new Date(fechaActual);
+        let ano = fechaActual.getFullYear();
+        let mes = fechaActual.getMonth();
+        let fecha = fechaActual.getDate();
 
-        //La verdad que no tengo ni idea de como quitar estas notificaciones que se repiten 
-        // Creo que se debe usar los canales de notificaciones de Android pero ni idea, he invertido ya 3 dias probando
-        Notifications.scheduleLocalNotificationAsync(
-            localNotification, schedulingOptions
-        );
+        let fechaAlarma = new Date(ano, mes, fecha, alarmHour, alarmMinutes);
+
+        let segundosAlarma = Date.parse(fechaAlarma);
+        let segundosActuales = Date.parse(new Date());
+
+        let fechaFinal = new Date(ano, mes, segundosActuales > segundosAlarma ? fecha + 1 : fecha, alarmHour, alarmMinutes);
+        fechaFinal = Date.parse(fechaFinal);
+
+        // Formar el programa de las notificaciones
+        const schedulingOptions = { time: fechaFinal, repeat: 'day' };
+
+        // Lanzar la notificacion de manera asincrona
+        await Notifications.scheduleLocalNotificationAsync(localNotification, schedulingOptions);
+
     }
 
     render() {
-
 
         //Control del modal
         const { modalDetalleVisible } = this.state;
@@ -202,7 +213,7 @@ class MedicationComponent extends React.Component {
                     <View style={styles.centeredView}>
                         <Card style={styles.cardMedicationAlarm}>
                             <View style={styles.modalView}>
-                                <Text style={styles.alarmTitle}>{ I18n.t("ALARM_TEXT")}</Text>
+                                <Text style={styles.alarmTitle}>{I18n.t("ALARM_TEXT")}</Text>
                                 <TouchableOpacity
                                     onPress={() => this.TimePicker.open()}
                                 >
@@ -274,7 +285,7 @@ class MedicationComponent extends React.Component {
                                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                         <Text style={styles.medicationModalText}>20 {I18n.t("DAYS_TEXT")}</Text>
                                         {/* Imagen de la alarma para poder programar una alarma para recordar la medicación */}
-                                        <TouchableOpacity  onPress={() => this.setModalAlarmaVisible(true)} >
+                                        <TouchableOpacity onPress={() => this.setModalAlarmaVisible(true)} >
                                             <Image
                                                 source={this.alarmaActiva ? require("../assets/imgMedicacion/alarm.png") : require("../assets/imgMedicacion/disable-alarm.png")}
                                                 style={styles.alarmActive}
@@ -396,7 +407,7 @@ const styles = StyleSheet.create({
         backgroundColor: PRIMARY_COLOR,
         height: MAIN_CARD_MODAL_HEIGHT,
         width: MAIN_CARD_MODAL_WIDTH,
-        borderWidth: 3
+        borderWidth: 1
     },
     cardMedicationTitle: {
         width: SECONDAY_CARD_MODAL_WIDTH,
@@ -405,18 +416,18 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: "center",
         justifyContent: "flex-start",
-        borderWidth: 3
+        borderWidth: 1
 
     },
     cardMedicationBody: {
         width: SECONDAY_CARD_MODAL_WIDTH,
         margin: NORMAL_MARGIN,
-        borderWidth: 3,
+        borderWidth: 1,
         height: SECONDAY_CARD_MODAL_HEIGHT
 
     },
     observation: {
-        borderWidth: 3,
+        borderWidth: 1,
         margin: NORMAL_MARGIN,
         borderRadius: 10,
 
@@ -430,7 +441,7 @@ const styles = StyleSheet.create({
         height: BUTTON_CONTROL_HEIGHT,
         textAlignVertical: "center",
         color: "#FFF",
-        borderWidth: 3,
+        borderWidth: 1,
         textAlign: "center"
 
     },
@@ -444,7 +455,7 @@ const styles = StyleSheet.create({
         height: BUTTON_CONTROL_HEIGHT,
         textAlignVertical: "center",
         color: "#FFF",
-        borderWidth: 3,
+        borderWidth: 1,
         textAlign: "center"
     },
     cardMedicationAlarm: {
@@ -453,12 +464,12 @@ const styles = StyleSheet.create({
         marginBottom: 0,
         alignItems: "center",
         justifyContent: "flex-start",
-        borderWidth: 3
+        borderWidth: 1
     },
     alarmViwer: {
         borderColor: PRIMARY_COLOR,
         borderRadius: 10,
-        borderWidth: 3,
+        borderWidth: 1,
         justifyContent: "center",
         alignItems: "center",
         margin: BUTTON_MARGIN

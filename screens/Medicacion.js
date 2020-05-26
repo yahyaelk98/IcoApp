@@ -32,50 +32,12 @@ export default function ScreenPerfil({ navigation, route }) {
                                     cMedicacion: "500Mg"
                                 },
                                 {
-                                    titulo: "Paracetamol",
+                                    titulo: "Ibuprofeno",
                                     nVeces: 3,
                                     pHoras: 8,
-                                    cMedicacion: "500Mg"
+                                    cMedicacion: "1G"
                                 },
-                                {
-                                    titulo: "Paracetamol",
-                                    nVeces: 3,
-                                    pHoras: 8,
-                                    cMedicacion: "500Mg"
-                                }, {
-                                    titulo: "Paracetamol",
-                                    nVeces: 3,
-                                    pHoras: 8,
-                                    cMedicacion: "500Mg"
-                                }, {
-                                    titulo: "Paracetamol",
-                                    nVeces: 3,
-                                    pHoras: 8,
-                                    cMedicacion: "500Mg"
-                                }, {
-                                    titulo: "Paracetamol",
-                                    nVeces: 3,
-                                    pHoras: 8,
-                                    cMedicacion: "500Mg"
-                                },
-                                {
-                                    titulo: "Paracetamol",
-                                    nVeces: 3,
-                                    pHoras: 8,
-                                    cMedicacion: "500Mg"
-                                },
-                                {
-                                    titulo: "Paracetamol",
-                                    nVeces: 3,
-                                    pHoras: 8,
-                                    cMedicacion: "500Mg"
-                                },
-                                {
-                                    titulo: "Paracetamol",
-                                    nVeces: 3,
-                                    pHoras: 8,
-                                    cMedicacion: "500Mg"
-                                }]
+                                ]
                         },
                     ]}
                     renderItem={({ item }) =>
