@@ -14,6 +14,8 @@ import ScreenMedicacion from "./Medicacion";
 import I18n from "../idiomas/idioma";
 import ScreenContactos from "./Contactos";
 import ScreenComoLlegar from "./ComoLlegar";
+// import ScreenCalendario from "./CalendarioV2";
+import ScreenCalendario from "./Calendario";
 
 
 
@@ -38,6 +40,8 @@ function Navigator() {
                 <Stack.Screen name="MEDICATION" component={ScreenMedicacion} options={{ titleName: 'MEDICATION_HEADER', headerShown: false }} />
                 <Stack.Screen name="CONTACT" component={ScreenContactos} options={{ titleName: 'CONTACT_HEADER', headerShown: false }} />
                 <Stack.Screen name="HOSPITAL" component={ScreenComoLlegar} options={{ titleName: 'COMO_LLEGAR_HEADER', headerShown: false }} />
+                <Stack.Screen name="CALENDAR" component={ScreenCalendario} options={{ titleName: 'CALENDAR', headerShown: false }} />
+
             </Stack.Navigator>
         </NavigationContainer>
     );
