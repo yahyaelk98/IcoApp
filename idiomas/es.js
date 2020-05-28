@@ -23,7 +23,7 @@ export default {
     ALERT_CANCEL_TEXT: "Cancelar",
     COMPRESSED_TEXT: "Comprimidos",
     DAYS_TEXT: "Dias",
-    INTERVAL_TEXT: " Veces cada ",
+    INTERVAL_TEXT: "veces al día ",
     NOTIFICATION_HEADER: "Recuerda tomar la medicación",
     DETERMINAT_TEXT: " de ",
     OBSERVATION_TEXT: "Observaciones",

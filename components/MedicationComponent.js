@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, Dimensions, Image, TouchableOpacity, TextInput, Modal, TouchableHighlight, Vibration, Alert } from "react-native";
+import { StyleSheet, View, Text, Dimensions, Image, TouchableOpacity, TextInput, Modal, ActivityIndicator, Vibration, Alert } from "react-native";
 import { Card } from "react-native-shadow-cards";
 import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
@@ -12,17 +12,20 @@ class MedicationComponent extends React.Component {
 
     tituloMedicamento;
     numeroDeVecesDia;
-    periodoDeHoras;
     cantidadDeMedicacion;
     alarmaActiva;
+    id;
+    tipoMedicamento;
+    
 
     //Setear variables de estado para controlar el modal
     state = {
         modalDetalleVisible: false,
         modalAlarmaVisible: false,
-        alarmTime: new Date(),
         alarmHour: new Date().getHours(),
-        alarmMinutes: new Date().getMinutes()
+        alarmMinutes: new Date().getMinutes(),
+        data: [],
+        isLoading: true
     };
 
     // Función asincrona que comprueba que el dispositivo tenga los permisos para mostrar notificaciones
@@ -152,6 +155,20 @@ class MedicationComponent extends React.Component {
 
     }
 
+    loadMedication() {
+        this.setModalDetalleVisible(true);
+
+        fetch('http://labs.iam.cat/~a18manfermar/API-ICO/public/api/medicamento/'+this.props.id)
+            .then((response) => response.json())
+            .then((json) => {
+                this.setState({ data: json });
+            })
+            .catch((error) => console.error(error))
+            .finally(() => {
+                this.setState({ isLoading: false });
+            });
+    }
+
     render() {
 
         //Control del modal
@@ -159,25 +176,28 @@ class MedicationComponent extends React.Component {
         const { modalAlarmaVisible } = this.state;
         const { alarmHour } = this.state;
         const { alarmMinutes } = this.state;
-
+        const { data,isLoading  } = this.state;
 
         this.tituloMedicamento = this.props.tituloMedicamento;
         this.numeroDeVecesDia = this.props.numeroDeVecesDia;
-        this.periodoDeHoras = this.props.periodoDeHoras;
         this.cantidadDeMedicacion = this.props.cantidadDeMedicacion;
+        this.id = this.props.id;
+
         //Control del color de la alarma
         this.alarmaActiva = true;
+
         return (
 
             <TouchableOpacity activeOpacity={0.8} onPress={() => {
-                this.setModalDetalleVisible(true);
+                //this.setModalDetalleVisible(true);
+                this.loadMedication();
             }}>
 
                 <Card style={styles.cardMedicacion}>
 
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Image
-                            source={require("../assets/imgMedicacion/pill.png")}
+                            source={(require("../assets/imgMedicacion/pill.png"))}
                             style={styles.image}
                         />
 
@@ -185,10 +205,10 @@ class MedicationComponent extends React.Component {
                             {/* Texto o nombre vulgar del medicamento */}
                             <Text style={styles.textNormal}>{this.tituloMedicamento}</Text>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                {/* Numero de veces al día y cada cuantas horas  */}
-                                <Text style={styles.textGrey}>{this.numeroDeVecesDia} {I18n.t("INTERVAL_TEXT")} {this.periodoDeHoras} h </Text>
                                 {/* Cantidad de medicamento */}
-                                {/* <Text style={styles.textGrey}>{this.cantidadDeMedicacion}</Text> */}
+                                <Text style={styles.textGrey}>{this.cantidadDeMedicacion} </Text>
+                                {/* Numero de veces al día y cada cuantas horas  */}
+                                <Text style={styles.textGrey}> {this.numeroDeVecesDia} {I18n.t("INTERVAL_TEXT")}  </Text>
                             </View>
                         </View>
 
@@ -262,28 +282,28 @@ class MedicationComponent extends React.Component {
                     transparent={true}
                     visible={modalDetalleVisible}
                 >
-                    <View style={styles.centeredView}>
-                        <Card style={styles.cardModal}>
+                   <View style={styles.centeredView}>
+                   {isLoading ? <ActivityIndicator size="large"/> : (<Card style={styles.cardModal}>
                             <View style={styles.modalView}>
                                 <Card style={styles.cardMedicationTitle}>
                                     <Image
                                         source={require("../assets/imgMedicacion/pill.png")}
                                         style={styles.image}
                                     />
-                                    <Text style={styles.medicationModalTextHeader}>Paracetamol STADA</Text>
+                                    <Text style={styles.medicationModalTextHeader}> {data.nombre}</Text>
                                 </Card>
                                 <Card style={styles.cardMedicationBody}>
-                                    <Text style={styles.medicationModalTextHeader}>Comrpimidos EFG</Text>
+                                    <Text style={styles.medicationModalTextHeader}> {data.compuestoActivo}</Text>
                                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                        <Text style={styles.medicationModalText}>40 {I18n.t("COMPRESSED_TEXT")}</Text>
-                                        <Text style={styles.medicationModalText}>1G</Text>
+                                        <Text style={styles.medicationModalText}> {data.comprimidosTotales} {I18n.t("COMPRESSED_TEXT")}</Text>
+                                        <Text style={styles.medicationModalText}> {data.cantidad}</Text>
                                     </View>
                                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                        <Text style={styles.medicationModalText}>3 {I18n.t("INTERVAL_TEXT")} 8h</Text>
-                                        <Text style={styles.medicationModalText}>1 {I18n.t("COMPRESSED_TEXT")}</Text>
+                                        <Text style={styles.medicationModalText}> {data.usosDiarios} {I18n.t("INTERVAL_TEXT")}</Text>
+                                        <Text style={styles.medicationModalText}> {data.dosis} {I18n.t("COMPRESSED_TEXT")}</Text>
                                     </View>
                                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                        <Text style={styles.medicationModalText}>20 {I18n.t("DAYS_TEXT")}</Text>
+                                        <Text style={styles.medicationModalText}> 20 {I18n.t("DAYS_TEXT")}</Text>
                                         {/* Imagen de la alarma para poder programar una alarma para recordar la medicación */}
                                         <TouchableOpacity onPress={() => this.setModalAlarmaVisible(true)} >
                                             <Image
@@ -294,12 +314,12 @@ class MedicationComponent extends React.Component {
                                         </TouchableOpacity>
                                     </View>
                                     <Text style={styles.medicationModalText}> {I18n.t("OBSERVATION_TEXT")}:</Text>
-                                    <TextInput style={styles.observation} multiline={true} numberOfLines={4} />
+                                    <TextInput style={styles.observation} editable={false} multiline={true} value={data.observaciones} numberOfLines={4} />
                                     <View style={{ alignItems: "center" }}>
                                         {/** Deberia permirtir descargar un PDF pero se va de madre */}
                                         <TouchableOpacity
                                             onPress={() => {
-                                                this.setModalDetalleVisible(!modalDetalleVisible);
+                                               alert("Comming soon");
                                             }}
                                         >
                                             <Text style={styles.downloadButton}>{I18n.t("DOWNLOAD_RECIPE")}</Text>
@@ -316,7 +336,7 @@ class MedicationComponent extends React.Component {
                                 </Card>
 
                             </View>
-                        </Card>
+                        </Card>)}
 
                     </View>
                 </Modal>

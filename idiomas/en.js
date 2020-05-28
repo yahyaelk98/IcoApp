@@ -23,7 +23,7 @@ export default {
     ALERT_CANCEL_TEXT: "Cancel",
     COMPRESSED_TEXT: "Compressed",
     DAYS_TEXT: "Days",
-    INTERVAL_TEXT: " Blows each ",
+    INTERVAL_TEXT: "for day ",
     NOTIFICATION_HEADER: "Remember to take the medication",
     DETERMINAT_TEXT: " of ",
     OBSERVATION_TEXT: "Observation ",

@@ -23,7 +23,7 @@ export default {
     ALERT_CANCEL_TEXT:"Cancelar",
     COMPRESSED_TEXT:"Comprimits",
     DAYS_TEXT:"Dies",
-    INTERVAL_TEXT:" Cops cada ",
+    INTERVAL_TEXT:"cops al dia ",
     NOTIFICATION_HEADER:"Recordi prendre la medicació",
     DETERMINAT_TEXT:" de ",
     OBSERVATION_TEXT:"Observacions",

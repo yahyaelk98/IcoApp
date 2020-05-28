@@ -55,17 +55,19 @@ export default function ScreenPerfil({ navigation, route }) {
                                 flexDirection: 'row', alignItems: 'center',
                                 justifyContent: 'center'
                             }}>
-                                <Text style={styles.profileElement}>{calculateAge(data.dataNeixement.date) } {I18n.t("AGE")} </Text>
-                                <Text style={{ marginLeft: NORMAL_MARGIN, fontSize: ICON_FONT_SIZE_NORMAL }}>{data.genero=="Hombre"? I18n.t("MALE"):I18n.t("FEMALE")}</Text>
+                                <Text style={styles.profileElement}>{calculateAge(data.dataNaixement.date)} {I18n.t("AGE")} </Text>
+                                <Text style={{ marginLeft: NORMAL_MARGIN, fontSize: ICON_FONT_SIZE_NORMAL }}>{data.genero == "Hombre" ? I18n.t("MALE") : I18n.t("FEMALE")}</Text>
                             </View>
                             <Separator />
 
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => { alert("Comming soon"); }}>
                                 <Text style={styles.profileButton} >{I18n.t("EDIT_PROFILE")}</Text>
                             </TouchableOpacity>
                             <Separator />
 
-                            <TouchableOpacity ><Text style={styles.profileButton} >{I18n.t("GENERATE_QR")}</Text></TouchableOpacity>
+                            <TouchableOpacity onPress={() => { alert("Comming soon"); }}>
+                                <Text style={styles.profileButton} >{I18n.t("GENERATE_QR")}</Text>
+                            </TouchableOpacity>
                         </View>
                     </Card>}
             </View>
@@ -78,13 +80,13 @@ function Separator() {
     return <View style={styles.separator} />;
 }
 
-function calculateAge(birthday) { 
+function calculateAge(birthday) {
     let y = birthday.substr(0, 4);
     let m = birthday.substr(5, 2);
     let d = birthday.substr(8, 2);
     var birthdayDate = new Date(y, m, d);
     var ageDifMs = Date.now() - birthdayDate.getTime();
-    var ageDate = new Date(ageDifMs); 
+    var ageDate = new Date(ageDifMs);
     return Math.abs(ageDate.getUTCFullYear() - 1970);
 };
 

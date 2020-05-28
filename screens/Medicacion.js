@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { LinearGradient } from "expo-linear-gradient";
-import { Image, StyleSheet, SectionList, View, Text, Dimensions, TouchableOpacity,Alert,Modal,TouchableHighlight, ActivityIndicator } from "react-native";
+import { StyleSheet, SectionList, View, Text, Dimensions,ActivityIndicator } from "react-native";
 import { Card } from "react-native-shadow-cards";
 import TitleComponent from '../components/TitleComponent';
 import MedicationComponent from '../components/MedicationComponent';
@@ -12,6 +12,15 @@ export default function ScreenPerfil({ navigation, route }) {
     const [isLoading, setLoading] = useState(true);
     const [data, setData] = useState([]);
 
+
+    useEffect(() => {
+        fetch('http://labs.iam.cat/~a18manfermar/API-ICO/public/api/medicamentos')
+            .then((response) => response.json())
+            .then((json) => setData(json))
+            .catch((error) => console.error(error))
+            .finally(() => setLoading(false));
+    }, []);
+
     // Render the list
     return (
         
@@ -21,32 +30,21 @@ export default function ScreenPerfil({ navigation, route }) {
                 <Card style={styles.cardHeader}>
                     <TitleComponent titleName={titleName} navigation={navigation} />
                 </Card>
+                {isLoading ? <ActivityIndicator /> :
                 <SectionList style={styles.cardPerfil}
                     sections={[
                         {
-                            data: [
-                                {
-                                    titulo: "Paracetamol",
-                                    nVeces: 3,
-                                    pHoras: 8,
-                                    cMedicacion: "500Mg"
-                                },
-                                {
-                                    titulo: "Ibuprofeno",
-                                    nVeces: 3,
-                                    pHoras: 8,
-                                    cMedicacion: "1G"
-                                },
-                                ]
+                            data: data
                         },
                     ]}
                     renderItem={({ item }) =>
                         
                             <MedicationComponent
-                                tituloMedicamento={item.titulo}
-                                numeroDeVecesDia={item.nVeces}
-                                periodoDeHoras={item.pHoras}
-                                cantidadDeMedicacion={item.cMedicacion}
+                                tituloMedicamento={item.nombre}
+                                numeroDeVecesDia={item.usosDiarios}
+                                id={item.id}
+                                cantidadDeMedicacion={item.cantidad}
+                                tipoMedicamento={item.tituloMedicamento}
                             />
                     }
                     renderSectionHeader={({ section }) =>
@@ -54,7 +52,7 @@ export default function ScreenPerfil({ navigation, route }) {
                         <Text style={styles.sectionHeader}>{section.title}</Text>
                     }
                     keyExtractor={(item, index) => index}
-                />
+                />}
             </View>
           
         </LinearGradient>
