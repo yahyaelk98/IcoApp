@@ -17,6 +17,7 @@ import ScreenComoLlegar from "./ComoLlegar";
 // import ScreenCalendario from "./CalendarioV2";
 import ScreenCalendario from "./Calendario";
 import ScreenBlog from "./Blog";
+import ScreenBlogRespuestas from "./BlogRespuestas";
 
 
 
@@ -43,7 +44,7 @@ function Navigator() {
                 <Stack.Screen name="HOSPITAL" component={ScreenComoLlegar} options={{ titleName: 'COMO_LLEGAR_HEADER', headerShown: false }} />
                 <Stack.Screen name="CALENDAR" component={ScreenCalendario} options={{ titleName: 'CALENDAR', headerShown: false }} />
                 <Stack.Screen name="BLOG" component={ScreenBlog} options={{ titleName: 'BLOG_HEADER', headerShown: false }} />
-
+                <Stack.Screen name="BLOGRESPUESTA" component={ScreenBlogRespuestas} options={{ titleName: 'BLOG_HEADER', headerShown: false }} />
 
             </Stack.Navigator>
         </NavigationContainer>

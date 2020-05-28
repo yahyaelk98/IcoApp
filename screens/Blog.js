@@ -1,13 +1,14 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {LinearGradient} from "expo-linear-gradient";
-import {Dimensions, StyleSheet, View, SectionList, Text} from "react-native";
+import {Dimensions, StyleSheet, View, SectionList, Text, TouchableOpacity, Modal} from "react-native";
 import {Card} from "react-native-shadow-cards";
 import TitleComponent from "../components/TitleComponent";
-import {Button} from 'react-native-elements';
+import {Button, Input} from 'react-native-elements';
 
 export default function ScreenBlog({navigation, route}) {
-
     const {titleName} = route.params;
+    const [modalVisible, setModalVisible] = useState(false);
+    const [value, onChangeText] = useState('');
 
     return (
         <LinearGradient colors={[GRADIENT_COLOR_A, GRADIENT_COLOR_B, GRADIENT_COLOR_C]}
@@ -44,18 +45,20 @@ export default function ScreenBlog({navigation, route}) {
                         }
                     ]}
                     renderItem={({item}) =>
-                        <Card style={styles.cardComentario}>
-                            <View>
-                                <Text style={{flexDirection: 'row', flex: 1}}>
-                                    <Text style={{fontSize: 18, fontWeight: "bold"}}>{item.nombreUsuario}</Text>
-                                    <View style={{width: 8, height: 1}}/>
-                                    <Text >{item.fechaPubl}</Text>
-                                </Text>
-                                <Text style={{marginLeft: 16, fontSize: 16}}>
-                                    {item.comentario}
-                                </Text>
-                            </View>
-                        </Card>
+                        <TouchableOpacity onPress={() => navigation.navigate("BLOGRESPUESTA", {titleName: titleName, id: item.id})}>
+                            <Card style={styles.cardComentario}>
+                                <View>
+                                    <Text style={{flexDirection: 'row', flex: 1}}>
+                                        <Text style={{fontSize: 18, fontWeight: "bold"}}>{item.nombreUsuario}</Text>
+                                        <View style={{width: 8, height: 1}}/>
+                                        <Text >{item.fechaPubl}</Text>
+                                    </Text>
+                                    <Text style={{marginLeft: 16, fontSize: 16}}>
+                                        {item.comentario}
+                                    </Text>
+                                </View>
+                            </Card>
+                        </TouchableOpacity>
                     }
                 />
                 <View style={{padding: NORMAL_MARGIN}}>
@@ -68,10 +71,43 @@ export default function ScreenBlog({navigation, route}) {
                             fontSize: 20
                         }}
                         title="COMENTAR"
-                        onPress={() => console.log("aqui")}
+                        onPress={() => setModalVisible(true)}
                     />
                 </View>
             </View>
+            <Modal
+                visible={modalVisible}
+                transparent={true}
+            >
+                <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                    <View style={styles.modalView}>
+                        <View style={{ flexDirection: 'row'}}>
+                            <Input
+                                placeholder='Escribe una respuesta'
+                                value={value}
+                                onChangeText={text => onChangeText(text)}
+                            />
+                        </View>
+                        <Button
+                            buttonStyle={{
+                                paddingLeft: 24,
+                                paddingRight: 24
+                            }}
+                            titleStyle={{
+                                fontSize: 20
+                            }}
+                            title="Enviar"
+                            onPress={function(){
+                                //Alert.alert("jajaja");
+                                console.log(value);
+                                setModalVisible(false);
+                            }
+                            }
+                        />
+                    </View>
+                </View>
+
+            </Modal>
         </LinearGradient>
     );
 
@@ -109,5 +145,20 @@ const styles = StyleSheet.create({
         padding: NORMAL_MARGIN,
         margin: MINIMUN_MARGIN,
         borderWidth: 1
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5
     }
 });
