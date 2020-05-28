@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { LinearGradient } from "expo-linear-gradient";
 import { Image, StyleSheet, View, Text, Dimensions, TouchableOpacity, ActivityIndicator } from "react-native";
-
-
 import { Card } from "react-native-shadow-cards";
-
-
 import TitleComponent from '../components/TitleComponent';
+import I18n from "../idiomas/idioma";
 
 export default function ScreenPerfil({ navigation, route }) {
 
@@ -18,12 +15,14 @@ export default function ScreenPerfil({ navigation, route }) {
 
     //Usamos una API pública para testear usuarios
     useEffect(() => {
-        fetch('https://randomuser.me/api/')
+        fetch('http://labs.iam.cat/~a18manfermar/API-ICO/public/api/perfil')
             .then((response) => response.json())
-            .then((json) => setData(json.results))
+            .then((json) => setData(json))
             .catch((error) => console.error(error))
             .finally(() => setLoading(false));
     }, []);
+
+
 
     return (
         <LinearGradient colors={[GRADIENT_COLOR_A, GRADIENT_COLOR_B, GRADIENT_COLOR_C]}
@@ -44,29 +43,29 @@ export default function ScreenPerfil({ navigation, route }) {
                             justifyContent: 'center'
                         }}>
                             <Image
-                                source={{ uri: 'https://www.sackettwaconia.com/wp-content/uploads/default-profile.png', }}
+                                source={{ uri: 'https://i.picsum.photos/id/814/200/300.jpg', }}
                                 style={styles.imagePerfil}
                             />
                             {/* Recogemos los datos de manera para hacer pruebas directamente de la respuesta de la API */}
-                            <Text style={{ fontSize: ICON_FONT_SIZE_HEADER }}>{data[0].name.first + " " + data[0].name.last}</Text>
-                            <Text style={{ fontSize: ICON_FONT_SIZE_NORMAL, color: '#8F8F8F' }}>Hospital Maria Teresa</Text>
-                            <Text style={styles.profileElement}>{data[0].email}</Text>
-                            <Text style={styles.profileElement}>{data[0].phone}</Text>
+                            <Text style={{ fontSize: ICON_FONT_SIZE_HEADER }}>{data.nombre + " " + data.apellidos}</Text>
+                            <Text style={{ fontSize: ICON_FONT_SIZE_NORMAL, color: '#8F8F8F' }}>{data.hospital}</Text>
+                            <Text style={styles.profileElement}>{data.correo}</Text>
+                            <Text style={styles.profileElement}>{data.telefonos.telefonos[0]}</Text>
                             <View style={{
                                 flexDirection: 'row', alignItems: 'center',
                                 justifyContent: 'center'
                             }}>
-                                <Text style={styles.profileElement}>{data[0].registered.age} años</Text>
-                                <Text style={{ marginLeft: NORMAL_MARGIN, fontSize: ICON_FONT_SIZE_NORMAL }}>{data[0].gender=="male"?"Hombre":"Mujer"}</Text>
+                                <Text style={styles.profileElement}>{calculateAge(data.dataNeixement.date) } {I18n.t("AGE")} </Text>
+                                <Text style={{ marginLeft: NORMAL_MARGIN, fontSize: ICON_FONT_SIZE_NORMAL }}>{data.genero=="Hombre"? I18n.t("MALE"):I18n.t("FEMALE")}</Text>
                             </View>
                             <Separator />
 
                             <TouchableOpacity>
-                                <Text style={styles.profileButton} >Editar perfil</Text>
+                                <Text style={styles.profileButton} >{I18n.t("EDIT_PROFILE")}</Text>
                             </TouchableOpacity>
                             <Separator />
 
-                            <TouchableOpacity ><Text style={styles.profileButton} >Generar QR</Text></TouchableOpacity>
+                            <TouchableOpacity ><Text style={styles.profileButton} >{I18n.t("GENERATE_QR")}</Text></TouchableOpacity>
                         </View>
                     </Card>}
             </View>
@@ -78,6 +77,16 @@ export default function ScreenPerfil({ navigation, route }) {
 function Separator() {
     return <View style={styles.separator} />;
 }
+
+function calculateAge(birthday) { 
+    let y = birthday.substr(0, 4);
+    let m = birthday.substr(5, 2);
+    let d = birthday.substr(8, 2);
+    var birthdayDate = new Date(y, m, d);
+    var ageDifMs = Date.now() - birthdayDate.getTime();
+    var ageDate = new Date(ageDifMs); 
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
+};
 
 //Constantes de tamano responsive
 const { width, height } = Dimensions.get('window');
@@ -140,7 +149,6 @@ const styles = StyleSheet.create({
         backgroundColor: "#007bff",
         padding: BUTTON_MARGIN,
         borderRadius: 10,
-        width: BUTTON_PROFILE_WIDTH,
         height: BUTTON_PROFILE_HEIGHT,
         textAlignVertical: "center",
         color: "#FFF"

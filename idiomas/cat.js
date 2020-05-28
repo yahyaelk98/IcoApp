@@ -23,12 +23,35 @@ export default {
     ALERT_CANCEL_TEXT:"Cancelar",
     COMPRESSED_TEXT:"Comprimits",
     DAYS_TEXT:"Dies",
-    INTERVAL_TEXT:" cops cada ",
+    INTERVAL_TEXT:" Cops cada ",
     NOTIFICATION_HEADER:"Recordi prendre la medicació",
     DETERMINAT_TEXT:" de ",
     OBSERVATION_TEXT:"Observacions",
     DOWNLOAD_RECIPE:"Descarregar recepta",
-    ALARM_TEXT:"Alarma"
-
+    ALARM_TEXT:"Alarma",
+    //Calendari
+    WEEKDAYS:['Dl', 'Dt', 'Dc', 'Dj', 'Dv', 'Ds', 'Dg'],
+    MONTHS:[
+        'Gener',
+        'Febrer',
+        'Març',
+        'Abril',
+        'Maig',
+        'Juny',
+        'Juliol',
+        'Agost',
+        'Setembre',
+        'Octubre',
+        'Novembre',
+        'Desembre',
+    ],
+    PREVIOUS:"Anterior",
+    NEXT:"Següent",
+    //Perfil
+    AGE:"Anys",
+    MALE:"Home",
+    FEMALE:"Dona",
+    EDIT_PROFILE:"Editar perfil",
+    GENERATE_QR:"Generar QR"
 
 };

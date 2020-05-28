@@ -105,7 +105,7 @@ Este proyecto está bajo la Licencia **Aun no lo sabemos**
 
 ## Expresiones de Gratitud 🎁
 
-* Gracias al **Institut Pedralbes de Barcelona** y a sus professores📢.
+* Gracias al **Institut Pedralbes de Barcelona** y a sus profesores📢.
 * Gracias también al **Institut Català d'Oncologia** por ofrecernos el reto 🤓.
 
 
