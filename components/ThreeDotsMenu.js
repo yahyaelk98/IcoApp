@@ -36,11 +36,11 @@ class ThreeDotsMenu extends React.PureComponent {
         return (
             <View style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center' }}>
 
-                <TouchableOpacity  onPress={() => this.showMenu()}>
+                <TouchableOpacity  onPress={() => this.showMenu()} >
                     <Image  style={{ width: MENU_SIZE, height: MENU_SIZE }}
                     source={require('../assets/imgHome/menu.png')} />
                 </TouchableOpacity >
-                <Menu ref={this.setMenuRef} >
+                <Menu ref={this.setMenuRef}>
                     <MenuItem  onPress={this.onClickIdioma}>
                         <Text style={{ fontSize: ICON_FONT_SIZE_NORMAL }}>
                        { I18n.t("LANGUAGE_HEADER")}

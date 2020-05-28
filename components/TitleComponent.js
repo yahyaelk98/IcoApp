@@ -16,7 +16,7 @@ class TitleComponent extends React.Component {
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <ButtonBack navigation={this._navigation} />
-                <View style={{ justifyContent: 'center', alignItems: 'center', flex: 8 }}>
+                <View style={{  alignItems: 'center', flex: 8 }}>
                     <Text style={styles.textHeader}>{this.titleName}</Text>
                 </View>
                 <ThreeDotsMenu navigation={this._navigation}  />
@@ -49,9 +49,7 @@ const styles = StyleSheet.create({
     textHeader: {
         textAlign: 'center',
         fontSize: 24,
-        borderWidth: 1,
         borderColor: '#FFF',
-
     },
     linearGradient: {
         width: MAX_SIZE,
