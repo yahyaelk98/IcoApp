@@ -1,79 +1,90 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {LinearGradient} from "expo-linear-gradient";
-import {Dimensions, StyleSheet, View, SectionList, Text, TouchableOpacity, Modal} from "react-native";
+import {
+    Dimensions,
+    StyleSheet,
+    View,
+    SectionList,
+    Text,
+    TouchableOpacity,
+    Modal,
+    ActivityIndicator, Image,
+    Alert
+} from "react-native";
 import {Card} from "react-native-shadow-cards";
 import TitleComponent from "../components/TitleComponent";
 import {Button, Input} from 'react-native-elements';
+import I18n from '../idiomas/idioma';
 
 export default function ScreenBlog({navigation, route}) {
     const {titleName} = route.params;
     const [modalVisible, setModalVisible] = useState(false);
     const [value, onChangeText] = useState('');
 
+    const [isLoading, setLoading] = useState(true);
+    const [data, setData] = useState([]);
+
+
+
+    useEffect(() => {
+        fetch('http://labs.iam.cat/~a18manfermar/API-ICO/public/api/preguntas')
+            .then((response) => response.json())
+            .then((json) => setData(json))
+            .catch((error) => console.error(error))
+            .finally(() => setLoading(false));
+    }, []);
+
     return (
         <LinearGradient colors={[GRADIENT_COLOR_A, GRADIENT_COLOR_B, GRADIENT_COLOR_C]}
                         style={styles.linearGradient}>
-            <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+            <View style={{alignItems: 'center', flex: 1}}>
                 {/* HEADER */}
                 <Card style={styles.cardHeader}>
                     <TitleComponent titleName={titleName} navigation={navigation}/>
                 </Card>
                 {/* END HEADER */}
-                <SectionList style={styles.list}
-                    sections={[
-                        {
-                            data: [
-                                {
-                                    id: 1,
-                                    nombreUsuario: "Manel R.",
-                                    fechaPubl: "fa 16 hores",
-                                    comentario: "Oye si me duele la cabeza significa que voy a morir?"
-                                },
-                                {
-                                    id: 2,
-                                    nombreUsuario: "Jose M.",
-                                    fechaPubl: "fa 2 dies",
-                                    comentario: "Que significa si he tosido dos veces en un día?"
-                                },
-                                {
-                                    id: 3,
-                                    nombreUsuario: "Manel R.",
-                                    fechaPubl: "fa 16 hores",
-                                    comentario: "Oye si me duele la cabeza significa que voy a morir?"
-                                }
-                            ]
-                        }
-                    ]}
-                    renderItem={({item}) =>
-                        <TouchableOpacity onPress={() => navigation.navigate("BLOGRESPUESTA", {titleName: titleName, id: item.id})}>
-                            <Card style={styles.cardComentario}>
-                                <View>
-                                    <Text style={{flexDirection: 'row', flex: 1}}>
-                                        <Text style={{fontSize: 18, fontWeight: "bold"}}>{item.nombreUsuario}</Text>
-                                        <View style={{width: 8, height: 1}}/>
-                                        <Text >{item.fechaPubl}</Text>
-                                    </Text>
-                                    <Text style={{marginLeft: 16, fontSize: 16}}>
-                                        {item.comentario}
-                                    </Text>
-                                </View>
-                            </Card>
-                        </TouchableOpacity>
-                    }
-                />
-                <View style={{padding: NORMAL_MARGIN}}>
-                    <Button
-                        buttonStyle={{
-                            paddingLeft: 24,
-                            paddingRight: 24
-                        }}
-                        titleStyle={{
-                            fontSize: 20
-                        }}
-                        title="COMENTAR"
-                        onPress={() => setModalVisible(true)}
-                    />
-                </View>
+                {isLoading? <ActivityIndicator/> :
+                    <View style={{flex: 1}}>
+                        <SectionList style={styles.list}
+                                     sections={[
+                                         {
+                                             data: data
+                                         }
+                                     ]}
+                                     renderItem={({item}) =>
+                                         <TouchableOpacity onPress={() => navigation.navigate("BLOGRESPUESTA", {titleName: titleName, id: item.id, nombre: item.nombre, apellido: item.apellido, fecha: item.fecha.date, pregunta: item.pregunta})}>
+                                             <Card style={styles.cardComentario}>
+                                                 <View>
+                                                     <Text style={{flexDirection: 'row', flex: 1}}>
+                                                         <Text style={{fontSize: 18, fontWeight: "bold"}}>{item.nombre} {item.apellido.charAt(0)}.</Text>
+                                                         <View style={{width: 8, height: 1}}/>
+                                                         <Text >{
+                                                             I18n.t("ICO_BLOG_HACE_DIAS", {dias: diasDesde(new Date(item.fecha.date.split(' ')[0]))})
+                                                         }</Text>
+                                                     </Text>
+                                                     <Text style={{marginLeft: 16, fontSize: 16}}>
+                                                         {item.pregunta}
+                                                     </Text>
+                                                 </View>
+                                             </Card>
+                                         </TouchableOpacity>
+                                     }
+                        />
+                        <View style={{padding: NORMAL_MARGIN}}>
+                            <Button
+                                buttonStyle={{
+                                    paddingLeft: 24,
+                                    paddingRight: 24
+                                }}
+                                titleStyle={{
+                                    fontSize: 20
+                                }}
+                                title="COMENTAR"
+                                onPress={() => setModalVisible(true)}
+                            />
+                        </View>
+                    </View>
+                }
             </View>
             <Modal
                 visible={modalVisible}
@@ -81,6 +92,16 @@ export default function ScreenBlog({navigation, route}) {
             >
                 <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                     <View style={styles.modalView}>
+                        <View style={{flexDirection:'row', marginBottom: 16}}>
+                            <View style={{flex: 1}}>
+                                <TouchableOpacity style={{width: 30, height: 30}} onPress={() => setModalVisible(false)}>
+                                    <Image
+                                        style={{ width: 30 , height: 30 }}
+                                        source={require('../assets/global/close.png')}
+                                    />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
                         <View style={{ flexDirection: 'row'}}>
                             <Input
                                 placeholder='Escribe una respuesta'
@@ -98,9 +119,17 @@ export default function ScreenBlog({navigation, route}) {
                             }}
                             title="Enviar"
                             onPress={function(){
-                                //Alert.alert("jajaja");
-                                console.log(value);
-                                setModalVisible(false);
+                                fetch('http://labs.iam.cat/~a18manfermar/API-ICO/public/api/pregunta',{
+                                    method: 'POST',
+                                    body: JSON.stringify({
+                                        "pregunta": value
+                                    })
+                                }).then(function(){
+                                    onChangeText('');
+                                    Alert.alert("Pregunta enviada");
+                                }).catch(() => Alert.alert("Error al enviar pregunta"))
+                                    .finally(() => setModalVisible(false));
+
                             }
                             }
                         />
@@ -111,6 +140,10 @@ export default function ScreenBlog({navigation, route}) {
         </LinearGradient>
     );
 
+}
+
+function diasDesde(fecha) {
+    return Math.round((new Date()-fecha)/(1000*60*60*24));
 }
 
 const { width, height } = Dimensions.get('window');

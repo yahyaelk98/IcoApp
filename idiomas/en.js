@@ -52,5 +52,7 @@ export default {
     MALE:"Male",
     FEMALE:"Female",
     EDIT_PROFILE:"Edit profile",
-    GENERATE_QR:"Generate QR"
+    GENERATE_QR:"Generate QR",
+    //ICO BLOG
+    ICO_BLOG_HACE_DIAS: "%{dias} days ago"
 };

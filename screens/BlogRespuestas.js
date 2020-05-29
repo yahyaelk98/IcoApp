@@ -1,89 +1,99 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {LinearGradient} from "expo-linear-gradient";
-import {Dimensions, StyleSheet, View, SectionList, Text, Modal, Alert} from "react-native";
+import {
+    Dimensions,
+    StyleSheet,
+    View,
+    SectionList,
+    Text,
+    Modal,
+    Alert,
+    ActivityIndicator,
+    TouchableOpacity, Image
+} from "react-native";
 import {Card} from "react-native-shadow-cards";
 import TitleComponent from "../components/TitleComponent";
 import {Button, Input} from 'react-native-elements';
+import I18n from "../idiomas/idioma";
 
 export default function ScreenBlogRespuestas({navigation, route}) {
-    const {titleName} = route.params;
+    const {titleName, id, nombre, apellido, fecha, pregunta} = route.params;
     const [modalVisible, setModalVisible] = useState(false);
     const [value, onChangeText] = useState('');
+
+    const [isLoading, setLoading] = useState(true);
+    const [data, setData] = useState({});
+
+    useEffect(() => {
+        fetch('http://labs.iam.cat/~a18manfermar/API-ICO/public/api/respuesta/'+id)
+            .then((response) => response.json())
+            .then((json) => setData(json))
+            .catch(function(error){
+                console.log(error);
+                setData({id: id,nombre: nombre, apellido: apellido, fecha: {date: fecha}, pregunta: pregunta, respuesta: []});
+            })
+            .finally(() => setLoading(false));
+    }, []);
 
     return (
         <LinearGradient colors={[GRADIENT_COLOR_A, GRADIENT_COLOR_B, GRADIENT_COLOR_C]}
                         style={styles.linearGradient}>
-            <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+            <View style={{alignItems: 'center', flex: 1}}>
                 {/* HEADER */}
                 <Card style={styles.cardHeader}>
                     <TitleComponent titleName={titleName} navigation={navigation}/>
                 </Card>
                 {/* END HEADER */}
-                <Card style={styles.cardComentario}>
-                    <View>
-                        <Text style={{flexDirection: 'row'}}>
-                            <Text style={{fontSize: 18, fontWeight: "bold"}}>Manel R.</Text>
-                            <View style={{width: 8, height: 1}}/>
-                            <Text >fa 3 díes</Text>
-                        </Text>
-                        <Text style={{marginLeft: 16, fontSize: 16}}>
-                            Oye si me duele la cabeza significa que voy a morir?
-                        </Text>
-                    </View>
-                </Card>
-                <SectionList style={styles.list}
-                             sections={[
-                                 {
-                                     data: [
+                {isLoading ? <ActivityIndicator/> :
+                    <View style={{flex: 1}}>
+                        <Card style={styles.cardComentario}>
+                            <View>
+                                <Text style={{flexDirection: 'row'}}>
+                                    <Text style={{fontSize: 18, fontWeight: "bold"}}>{data.nombre} {data.apellido.charAt(0)}.</Text>
+                                    <View style={{width: 8, height: 1}}/>
+                                    <Text >{I18n.t("ICO_BLOG_HACE_DIAS", {dias: diasDesde(new Date(data.fecha.date.split(' ')[0]))})}</Text>
+                                </Text>
+                                <Text style={{marginLeft: 16, fontSize: 16}}>
+                                    {data.pregunta}
+                                </Text>
+                            </View>
+                        </Card>
+                        <SectionList style={styles.list}
+                                     sections={[
                                          {
-                                             id: 1,
-                                             nombreUsuario: "Manel R.",
-                                             fechaPubl: "fa 16 hores",
-                                             comentario: "Oye si me duele la cabeza significa que voy a morir?"
-                                         },
-                                         {
-                                             id: 2,
-                                             nombreUsuario: "Jose M.",
-                                             fechaPubl: "fa 2 dies",
-                                             comentario: "Que significa si he tosido dos veces en un día?"
-                                         },
-                                         {
-                                             id: 3,
-                                             nombreUsuario: "Manel R.",
-                                             fechaPubl: "fa 16 hores",
-                                             comentario: "Oye si me duele la cabeza significa que voy a morir?"
+                                             data: data.respuesta
                                          }
-                                     ]
-                                 }
-                             ]}
-                             renderItem={({item}) =>
-                                 <Card style={styles.cardRespuesta}>
-                                     <View>
-                                         <Text style={{flexDirection: 'row', flex: 1}}>
-                                             <Text style={{fontSize: 18, fontWeight: "bold"}}>{item.nombreUsuario}</Text>
-                                             <View style={{width: 8, height: 1}}/>
-                                             <Text >{item.fechaPubl}</Text>
-                                         </Text>
-                                         <Text style={{marginLeft: 16, fontSize: 16}}>
-                                             {item.comentario}
-                                         </Text>
-                                     </View>
-                                 </Card>
-                             }
-                />
-                <View style={{padding: NORMAL_MARGIN}}>
-                    <Button
-                        buttonStyle={{
-                            paddingLeft: 24,
-                            paddingRight: 24
-                        }}
-                        titleStyle={{
-                            fontSize: 20
-                        }}
-                        title="RESPONDER"
-                        onPress={() => setModalVisible(true)}
-                    />
-                </View>
+                                     ]}
+                                     renderItem={({item}) =>
+                                         <Card style={styles.cardRespuesta}>
+                                             <View>
+                                                 <Text style={{flexDirection: 'row', flex: 1}}>
+                                                     <Text style={{fontSize: 18, fontWeight: "bold"}}>{item.nombre} {item.apellido.charAt(0)}.</Text>
+                                                     <View style={{width: 8, height: 1}}/>
+                                                     <Text >{I18n.t("ICO_BLOG_HACE_DIAS", {dias: diasDesde(new Date(item.fecha.date.split(' ')[0]))})}</Text>
+                                                 </Text>
+                                                 <Text style={{marginLeft: 16, fontSize: 16}}>
+                                                     {item.respuesta}
+                                                 </Text>
+                                             </View>
+                                         </Card>
+                                     }
+                        />
+                        <View style={{padding: NORMAL_MARGIN}}>
+                            <Button
+                                buttonStyle={{
+                                    paddingLeft: 24,
+                                    paddingRight: 24
+                                }}
+                                titleStyle={{
+                                    fontSize: 20
+                                }}
+                                title="RESPONDER"
+                                onPress={() => setModalVisible(true)}
+                            />
+                        </View>
+                    </View>
+                }
             </View>
             <Modal
             visible={modalVisible}
@@ -91,6 +101,16 @@ export default function ScreenBlogRespuestas({navigation, route}) {
         >
             <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                 <View style={styles.modalView}>
+                    <View style={{flexDirection:'row', marginBottom: 16}}>
+                        <View style={{flex: 1}}>
+                            <TouchableOpacity style={{width: 30, height: 30}} onPress={() => setModalVisible(false)}>
+                                <Image
+                                    style={{ width: 30 , height: 30 }}
+                                    source={require('../assets/global/close.png')}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
                     <View style={{ flexDirection: 'row'}}>
                         <Input
                             placeholder='Escribe una respuesta'
@@ -108,9 +128,16 @@ export default function ScreenBlogRespuestas({navigation, route}) {
                         }}
                         title="Enviar"
                         onPress={function(){
-                            //Alert.alert("jajaja");
-                            console.log(value);
-                            setModalVisible(false);
+                            fetch('http://labs.iam.cat/~a18manfermar/API-ICO/public/api/respuesta/'+data.id,{
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    "respuesta": value
+                                })
+                            }).then(function(){
+                                onChangeText('');
+                                Alert.alert("Respuesta enviada");
+                            }).catch(() => Alert.alert("Error al enviar respuesta"))
+                                .finally(() => setModalVisible(false));
                         }
                         }
                     />
@@ -121,6 +148,10 @@ export default function ScreenBlogRespuestas({navigation, route}) {
         </LinearGradient>
     );
 
+}
+
+function diasDesde(fecha) {
+    return Math.round((new Date()-fecha)/(1000*60*60*24));
 }
 
 const { width, height } = Dimensions.get('window');
@@ -155,6 +186,7 @@ const styles = StyleSheet.create({
     cardComentario: {
         padding: NORMAL_MARGIN,
         margin: MINIMUN_MARGIN,
+        marginLeft: NORMAL_MARGIN,
         borderWidth: 1
     },
     cardRespuesta: {
