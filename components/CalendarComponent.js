@@ -1,18 +1,12 @@
-//This is an example of Calendar// 
 import React, { Component } from 'react';
-//import react in our code. 
-
 import { StyleSheet, Text, View, Dimensions } from 'react-native';
-//import all the components we are going to use.
-
 import CalendarPicker from 'react-native-calendar-picker';
-//import CalendarPicker from the package we installed
+import I18n from "../idiomas/idioma";
 
 export default class CalendarComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            //set value in state for start and end date
             selectedStartDate: null,
             selectedEndDate: null,
         };
@@ -33,66 +27,49 @@ export default class CalendarComponent extends Component {
         }
     }
 
+
     render() {
         const { selectedStartDate, selectedEndDate } = this.state;
-        const minDate = new Date(2018, 1, 1); // Min date
-        const maxDate = new Date(2050, 6, 3); // Max date
-        const startDate = selectedStartDate ? selectedStartDate.toString() : ''; //Start date
-        const endDate = selectedEndDate ? selectedEndDate.toString() : ''; //End date
+        const minDate = new Date(2018, 0, 1); 
+        const maxDate = new Date(2050, 11, 1); 
+        const startDate = selectedStartDate ? selectedStartDate.toString() : ''; 
+        const endDate = selectedEndDate ? selectedEndDate.toString() : ''; 
         return (
             <View style={styles.container}>
                 <CalendarPicker style={styles.calendar}
                     startFromMonday={true}
-                    allowRangeSelection={true}
+                    allowRangeSelection={false}
                     minDate={minDate}
                     maxDate={maxDate}
-                    weekdays={['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun']}
-                    months={[
-                        'January',
-                        'Febraury',
-                        'March',
-                        'April',
-                        'May',
-                        'June',
-                        'July',
-                        'August',
-                        'September',
-                        'October',
-                        'November',
-                        'December',
-                    ]}
-                    previousTitle="   ANTERIOR"
-                    nextTitle="SIGUIENTE   "
-                    todayBackgroundColor="#e6ffe6"
-                    selectedDayColor="#66ff33"
-                    selectedDayTextColor="#000000"
-                    scaleFactor={400}
+                    weekdays={I18n.t("WEEKDAYS")}
+                    months={I18n.t("MONTHS")}
+                    previousTitle={"   "+I18n.t("PREVIOUS")}
+                    nextTitle={I18n.t("NEXT")+"   "}
+                    todayBackgroundColor={PRIMARY_COLOR}
+                    selectedDayColor={GREY_COLOR}
+                    selectedDayTextColor={WHITE_COLOR}
+                    scaleFactor={430}
                     textStyle={{
                         //fontFamily: 'Cochin',
                         fontSize:15,
                         color: '#000000',
                     }}
-                    onDateChange={this.onDateChange}
+                   onDateChange={this.onDateChange}
                 />
-                {/* <View style={{padding:16}}>
-          <Text style={{padding:16}}>SELECTED START DATE :</Text>
-          <Text style={{padding:16}}>{startDate}</Text>
-          <Text style={{padding:16}}>SELECTED END DATE : </Text>
-          <Text style={{padding:16}}>{endDate}</Text>
-        </View> */}
             </View>
         );
     }
 }
 
-const { width, height } = Dimensions.get('window');
-const MAIN_CARD_WIDTH = width * 0.7;
-const MAIN_CARD_HEIGHT = height * 0.75;
+
+const PRIMARY_COLOR = "#4285F4";
+const WHITE_COLOR = "#FFF";
+const GREY_COLOR = "#8F8F8F";
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#FFFFFF',
-
+        backgroundColor: WHITE_COLOR,
+        width :300
     },
    
 });

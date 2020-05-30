@@ -54,5 +54,12 @@ export default {
     EDIT_PROFILE:"Editar perfil",
     GENERATE_QR:"Generar QR",
     //ICO BLOG
-    ICO_BLOG_HACE_DIAS: "hace %{dias} días"
+    ICO_BLOG_HACE_DIAS: "hace %{dias} días",
+    //Citas
+    HOSPITAL:"Hospital",
+    BUILDING:"Edificio",
+    BOX:"Box",
+    DAY:"Fecha",
+    SCHEDULE:"Hora",
+    INDICATIONS:"Indicaciones"
 };

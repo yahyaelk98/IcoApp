@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { LinearGradient } from "expo-linear-gradient";
-import { Image, StyleSheet, SectionList, View, Text, Dimensions, TouchableOpacity,Alert,Modal,TouchableHighlight, ActivityIndicator } from "react-native";
+import { StyleSheet, View, Dimensions, ActivityIndicator, SectionList, Text } from "react-native";
 import { Card } from "react-native-shadow-cards";
 import TitleComponent from '../components/TitleComponent';
 import CalendarComponent from '../components/CalendarComponent';
+import DateComponent from '../components/DateComponent';
 export default function ScreenPerfil({ navigation, route }) {
 
     const { titleName } = route.params;
@@ -11,9 +12,18 @@ export default function ScreenPerfil({ navigation, route }) {
     const [isLoading, setLoading] = useState(true);
     const [data, setData] = useState([]);
 
+
+    useEffect(() => {
+        fetch('http://labs.iam.cat/~a18manfermar/API-ICO/public/api/citas')
+            .then((response) => response.json())
+            .then((json) => setData(json))
+            .catch((error) => console.error(error))
+            .finally(() => setLoading(false));
+    }, []);
+
     // Render the list
     return (
-        
+
         <LinearGradient colors={[GRADIENT_COLOR_A, GRADIENT_COLOR_B, GRADIENT_COLOR_C]}
             style={styles.linearGradient}>
             <View style={{ alignItems: 'center' }}>
@@ -21,14 +31,44 @@ export default function ScreenPerfil({ navigation, route }) {
                     <TitleComponent titleName={titleName} navigation={navigation} />
                 </Card>
                 <Card style={styles.cardPerfil}>
-                    <CalendarComponent  />
+                    <View style={{ alignItems: 'center' }}>
+                        <CalendarComponent />
+                        <Text style={{fontSize:FONT_SIZE_NORMAL, marginBottom:-45}}>Citas pendientes:</Text>
+                        {isLoading ? <ActivityIndicator /> :
+                            <SectionList style={styles.cardPerfil}
+                                sections={[
+                                    {
+                                        data: data
+                                    },
+                                ]}
+                                renderItem={({ item }) =>
+
+                                    <DateComponent
+                                        tituloCita={item.nombre}
+                                        id={item.id}
+                                        fecha={item.fecha.date}
+                                        hora={item.hora.date}
+                                    />
+                                }
+                                renderSectionHeader={({ section }) =>
+                                    //Componente de la medicación
+                                    <Text style={styles.sectionHeader}>{section.title}</Text>
+                                }
+                                keyExtractor={(item, index) => index}
+                            />}
+                    </View>
                 </Card>
+
             </View>
-          
+
         </LinearGradient>
 
     );
 
+}
+
+function Separator() {
+    return <View style={styles.separator} />;
 }
 
 //Constantes de tamano responsive
@@ -38,7 +78,7 @@ const MAIN_CARD_HEIGHT = height * 0.75;
 
 
 
-const ICON_FONT_SIZE_NORMAL = width * 0.05;
+const FONT_SIZE_NORMAL = width * 0.07;
 
 const NORMAL_MARGIN = '5%';
 const BIG_MARGIN = '10%';
@@ -68,11 +108,12 @@ const styles = StyleSheet.create({
         height: MAX_SIZE
     },
     cardPerfil: {
-        
-        width: MAIN_CARD_WIDTH, height: MAIN_CARD_HEIGHT, padding: NORMAL_MARGIN, margin: NORMAL_MARGIN
-
+        width: MAIN_CARD_WIDTH,
+        height: MAIN_CARD_HEIGHT,
+        padding: NORMAL_MARGIN,
+        margin: NORMAL_MARGIN,
     },
-  
+
     separator: {
         marginVertical: 8,
         borderBottomColor: '#737373',
