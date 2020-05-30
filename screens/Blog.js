@@ -30,7 +30,7 @@ export default function ScreenBlog({navigation, route}) {
         fetch('http://labs.iam.cat/~a18manfermar/API-ICO/public/api/preguntas')
             .then((response) => response.json())
             .then((json) => setData(json))
-            .catch((error) => console.error(error))
+            .catch((error) => console.log(error))
             .finally(() => setLoading(false));
     }, []);
 

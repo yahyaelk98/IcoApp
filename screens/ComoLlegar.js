@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {LinearGradient} from "expo-linear-gradient";
-import {StyleSheet, View, Text,SectionList, TouchableOpacity, Picker} from "react-native";
+import {StyleSheet, View, Text, SectionList, TouchableOpacity, Picker, ActivityIndicator} from "react-native";
 import {Card} from "react-native-shadow-cards";
 import TitleComponent from "../components/TitleComponent";
 import I18n from "../idiomas/idioma";
@@ -33,78 +33,104 @@ export default function ScreenComoLlegar({navigation, route}) {
     }
 
     const {titleName} = route.params;
-    const [selectedValue, setSelectedValue] = useState(1);
+    const [selectedValue, setSelectedValue] = useState(0);
+
+    const [isLoading, setLoading] = useState(true);
+    const [data, setData] = useState([]);
+
+    const [hospReferencia, setHospReferencia] = useState(I18n.t("COMO_LLEGAR_HOSP_REF")+": ");
+
+    useEffect(() => {
+        fetch('http://labs.iam.cat/~a18manfermar/API-ICO/public/api/hospital')
+            .then((response) => response.json())
+            .then((json) => setData([json]))
+            .catch((error) => console.log(error))
+            .finally(() => setLoading(false));
+    }, []);
 
     return(
         <LinearGradient colors={[GRADIENT_COLOR_A, GRADIENT_COLOR_B, GRADIENT_COLOR_C]}
                         style={styles.linearGradient}>
-            <View style={{alignItems: 'center', justifyContent: 'center'}}>
+            <View style={{alignItems: 'center', flex: 1}}>
                 {/* HEADER */}
                 <Card style={styles.cardHeader}>
                     <TitleComponent titleName={titleName} navigation={navigation}/>
                 </Card>
                 {/* END HEADER */}
-                <SectionList style={styles.cardList}
-                             sections={[
-                                 {
-                                     data: [
+                {isLoading? <ActivityIndicator/>:
+                    <View style={{flex: 1}}>
+                        <SectionList style={styles.cardList}
+                                     sections={[
                                          {
-                                             nombre: "ICO Hospitalet",
-                                             lineasBus: "1, 2, 10, 70, 72, 80, 81, 86, 87, 94, 95, 46, 65",
-                                             metro: "Línea 1 (Hospital de Bellvitge)",
-                                             latitude: 41.375267,
-                                             longitude: 2.149080
-                                         },
-                                         {
-                                             nombre: "ICO Hospitalet",
-                                             lineasBus: "1, 2, 10, 70, 72, 80, 81, 86, 87, 94, 95, 46, 65",
-                                             metro: "Línea 1 (Hospital de Bellvitge)",
-                                             latitude: 41.375267,
-                                             longitude: 2.149080
+                                             data: data
                                          }
-                                     ]
-                                 }
-                             ]}
-                             renderItem={({item}) =>
-                                <Card style={styles.cardComoLlegar}>
-                                    <Text style={{fontSize: 24}}>{I18n.t("COMO_LLEGAR_HOSP_REF")}: {item.nombre}</Text>
-                                    <View style={{flexDirection: 'row', flex: 1}}>
-                                        <TouchableOpacity style={{flex: 1}} onPress={() =>  OpenMap.show({
-                                            latitude: item.latitude,
-                                            longitude: item.longitude
-                                            })}>
-                                            <MapView
-                                                style={{flex: 1, marginBottom: NORMAL_MARGIN}}
-                                                initialRegion={{
-                                                    latitude: item.latitude,
-                                                    longitude: item.longitude,
-                                                    latitudeDelta: 0.0922,
-                                                    longitudeDelta: 0.0421
-                                                }}
-                                            >
-                                                <Marker coordinate={{latitude: item.latitude,
-                                                    longitude: item.longitude}}
-                                                />
-                                            </MapView>
-                                        </TouchableOpacity>
-                                        <View style={{flex: 1, paddingLeft: 10}}>
-                                            <Text style={{marginBottom: 10}}>{I18n.t("COMO_LLEGAR_BUS_LINEAS")}: {item.lineasBus}</Text>
-                                            <Text>{I18n.t("COMO_LLEGAR_METRO")}: {item.metro}</Text>
-                                        </View>
-                                    </View>
-                                </Card>
-                            }
-                />
-                <Card style={styles.cardComoLlegar}>
-                    <Text style={{fontSize: 16}}>{I18n.t("COMO_LLEGAR_OTRO_INSTR")}</Text>
-                    <Picker
-                        style={{width: "75%"}}
-                        selectedValue={selectedValue}
-                        onValueChange={(itemValue) => setSelectedValue(itemValue)}
-                    >
-                        {selectProvincias}
-                    </Picker>
-                </Card>
+                                     ]}
+                                     renderItem={({item}) =>
+                                         <Card style={styles.cardComoLlegar}>
+                                             <Text style={{fontSize: 24}}>{hospReferencia}{item.nombre}</Text>
+                                             <View style={{flexDirection: 'row', flex: 1}}>
+                                                 <TouchableOpacity style={{flex: 1}} onPress={() =>  OpenMap.show({
+                                                     latitude: item.ubicacion.lat[0],
+                                                     longitude: item.ubicacion.lng[0]
+                                                 })}>
+                                                     <MapView
+                                                         style={{flex: 1, marginBottom: NORMAL_MARGIN, height: 90, width: 150}}
+                                                         initialRegion={{
+                                                             latitude: item.ubicacion.lat[0],
+                                                             longitude: item.ubicacion.lng[0],
+                                                             latitudeDelta: 0.0922,
+                                                             longitudeDelta: 0.0421
+                                                         }}
+                                                     >
+                                                         <Marker coordinate={{latitude: item.ubicacion.lat[0],
+                                                             longitude: item.ubicacion.lng[0]}}
+                                                         />
+                                                     </MapView>
+                                                 </TouchableOpacity>
+                                                 <View style={{flex: 1, paddingLeft: 10}}>
+                                                     <Text style={{marginBottom: 10}}>{I18n.t("COMO_LLEGAR_BUS_LINEAS")}: {item.lineaBus}</Text>
+                                                     <Text>{I18n.t("COMO_LLEGAR_METRO")}: {item.lineasMetro}</Text>
+                                                 </View>
+                                             </View>
+                                         </Card>
+                                     }
+                        />
+                        <Card style={styles.cardComoLlegar}>
+                            <Text style={{fontSize: 16}}>{I18n.t("COMO_LLEGAR_OTRO_INSTR")}</Text>
+                            <Picker
+                                style={{width: "75%"}}
+                                selectedValue={selectedValue}
+                                onValueChange={function (itemValue) {
+                                    setSelectedValue(itemValue);
+                                    setLoading(true);
+                                    if(itemValue != 0){
+                                        console.log(provincias[itemValue].ciudad);
+                                        fetch('http://labs.iam.cat/~a18manfermar/API-ICO/public/api/hospital/'+provincias[itemValue].ciudad)
+                                            .then((response) => response.json())
+                                            .then(function(json){
+                                                setData(json);
+                                                setHospReferencia('');
+                                            })
+                                            .catch((error) => console.log(error))
+                                            .finally(() => setLoading(false));
+                                    }else{
+                                        fetch('http://labs.iam.cat/~a18manfermar/API-ICO/public/api/hospital')
+                                            .then((response) => response.json())
+                                            .then(function(json){
+                                                setData([json]);
+                                                setHospReferencia(I18n.t("COMO_LLEGAR_HOSP_REF")+": ");
+                                            })
+                                            .catch((error) => console.log(error))
+                                            .finally(() => setLoading(false));
+                                    }
+                                }}
+                                >
+                                {selectProvincias}
+                            </Picker>
+                        </Card>
+                    </View>
+                }
+
             </View>
         </LinearGradient>
     );
@@ -138,6 +164,6 @@ const styles = StyleSheet.create({
         padding: NORMAL_MARGIN,
         margin: MINIMUN_MARGIN,
         borderWidth: 1,
-        alignItems: 'center'
+        alignItems: 'flex-start'
     }
 });
