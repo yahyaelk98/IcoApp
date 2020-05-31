@@ -14,7 +14,7 @@ class TitleComponent extends React.Component {
         this.titleName = this.props.titleName;
         return (
 
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' , height: 30}}>
                 <ButtonBack navigation={this._navigation} />
                 <View style={{  alignItems: 'center', flex: 8 }}>
                     <Text style={styles.textHeader}>{this.titleName}</Text>

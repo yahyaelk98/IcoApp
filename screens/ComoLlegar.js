@@ -10,30 +10,12 @@ import OpenMap from "react-native-open-map";
 
 export default function ScreenComoLlegar({navigation, route}) {
 
-    let provincias = [
-        {
-            id: 0,
-            ciudad: I18n.t("COMO_LLEGAR_SELECCION_PROV")
-        },
-        {
-            id: 1,
-            ciudad: "Barcelona"
-        }
-        ,
-        {
-            id: 2,
-            ciudad: "Valencia"
-        }
-        ];
-
-    let selectProvincias = [];
-
-    for(let i=0;i<provincias.length; i++){
-        selectProvincias.push(<Picker.Item label={provincias[i].ciudad} value={provincias[i].id}/>)
-    }
+    const [selectProvincias, setSelectProvincias] = useState([<Picker.Item label={I18n.t("COMO_LLEGAR_SELECCION_PROV")} value={0}/>]);
 
     const {titleName} = route.params;
     const [selectedValue, setSelectedValue] = useState(0);
+
+
 
     const [isLoading, setLoading] = useState(true);
     const [data, setData] = useState([]);
@@ -45,7 +27,20 @@ export default function ScreenComoLlegar({navigation, route}) {
             .then((response) => response.json())
             .then((json) => setData([json]))
             .catch((error) => console.log(error))
-            .finally(() => setLoading(false));
+            .finally(() =>
+                fetch('http://labs.iam.cat/~a18manfermar/API-ICO/public/api/provincias')
+                    .then((response) => response.json())
+                    .then((json) => {
+                        let auxSelectProvincias = [];
+                        auxSelectProvincias.push(<Picker.Item label={I18n.t("COMO_LLEGAR_SELECCION_PROV")} value={0}/>);
+                        for(let i=0;i<json.length; i++){
+                            auxSelectProvincias.push(<Picker.Item label={json[i].provincia[0]} value={json[i].provincia[0]}/>)
+                        }
+                        setSelectProvincias(auxSelectProvincias);
+                    })
+                    .finally(() => setLoading(false))
+            );
+
     }, []);
 
     return(
@@ -103,22 +98,22 @@ export default function ScreenComoLlegar({navigation, route}) {
                                 onValueChange={function (itemValue) {
                                     setSelectedValue(itemValue);
                                     setLoading(true);
-                                    if(itemValue != 0){
-                                        console.log(provincias[itemValue].ciudad);
-                                        fetch('http://labs.iam.cat/~a18manfermar/API-ICO/public/api/hospital/'+provincias[itemValue].ciudad)
-                                            .then((response) => response.json())
-                                            .then(function(json){
-                                                setData(json);
-                                                setHospReferencia('');
-                                            })
-                                            .catch((error) => console.log(error))
-                                            .finally(() => setLoading(false));
-                                    }else{
+                                    if(itemValue == 0){
                                         fetch('http://labs.iam.cat/~a18manfermar/API-ICO/public/api/hospital')
                                             .then((response) => response.json())
                                             .then(function(json){
                                                 setData([json]);
                                                 setHospReferencia(I18n.t("COMO_LLEGAR_HOSP_REF")+": ");
+                                            })
+                                            .catch((error) => console.log(error))
+                                            .finally(() => setLoading(false));
+
+                                    }else{
+                                        fetch('http://labs.iam.cat/~a18manfermar/API-ICO/public/api/hospital/'+itemValue)
+                                            .then((response) => response.json())
+                                            .then(function(json){
+                                                setData(json);
+                                                setHospReferencia('');
                                             })
                                             .catch((error) => console.log(error))
                                             .finally(() => setLoading(false));
