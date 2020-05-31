@@ -21,7 +21,6 @@ class DateComponent extends Component {
         fetch('http://labs.iam.cat/~a18manfermar/API-ICO/public/api/cita/' + this.props.id)
             .then((response) => response.json())
             .then((json) => {
-                console.log(json);
                 this.setState({ data: json });
             })
             .catch((error) => console.error(error))
@@ -37,7 +36,7 @@ class DateComponent extends Component {
 
     render() {
         this.tituloCita = this.props.tituloCita;
-        this.fechaPreview = this.props.fecha.substr(0, 9);
+        this.fechaPreview = this.props.fecha.substr(0, 10);
         this.horaPreview = this.props.hora.substr(10, 6);
         const { data, isLoading } = this.state;
         const { modalDetalleVisible } = this.state;
@@ -93,7 +92,7 @@ class DateComponent extends Component {
                                         </View>
                                         <View style={{ flexDirection: 'row' }}>
                                             <Text style={styles.label}>{I18n.t("DAY")}</Text>
-                                            <Text style={styles.labelText}>{data.fecha.date.substr(0, 9)}</Text>
+                                            <Text style={styles.labelText}>{data.fecha.date.substr(0, 10)}</Text>
                                         </View>
                                         <View style={{ flexDirection: 'row' }}>
                                             <Text style={styles.label} >{I18n.t("SCHEDULE")}</Text>
@@ -147,8 +146,6 @@ const MAIN_CARD_MODAL_WIDTH = width * 0.9;
 const SECONDAY_CARD_MODAL_WIDTH = width * 0.8;
 const SECONDAY_CARD_MODAL_HEIGHT = height * 0.6;
 
-
-
 const BUTTON_CONTROL_HEIGHT = width * 0.1;
 const BUTTON_CONTROL_WIDTH = width * 0.4;
 
@@ -158,10 +155,8 @@ const LABEL_TEXT_WIDTH = width * 0.5;
 
 const BUTTON_MARGIN = '3%';
 
-const SUCCESS_COLOR = "#007E33";
 const PRIMARY_COLOR = "#4285F4";
 const DANGER_COLOR = "#CC0000";
-const GREY_COLOR = "#8F8F8F";
 const WHITE_COLOR = "#FFF";
 
 const styles = StyleSheet.create({

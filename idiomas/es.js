@@ -61,5 +61,6 @@ export default {
     BOX:"Box",
     DAY:"Fecha",
     SCHEDULE:"Hora",
-    INDICATIONS:"Indicaciones"
+    INDICATIONS:"Indicaciones",
+    DATE_TEXT:"Citas pendientes"
 };

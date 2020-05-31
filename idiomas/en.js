@@ -61,6 +61,7 @@ export default {
     BOX:"Box",
     DAY:"Day",
     SCHEDULE:"Schedule",
-    INDICATIONS:"Indications"
+    INDICATIONS:"Indications",
+    DATE_TEXT:"Slope dates"
 
 };
