@@ -92,7 +92,7 @@ class MedicationComponent extends React.Component {
         //Alert de aviso que se ha programado la alarma 
         Alert.alert(
             I18n.t("ALERT_ALARM_HEADER"),
-            I18n.t("ALERT_ALARM_BODY") + hour + ":" + minute,
+            I18n.t("ALERT_ALARM_BODY") +" "+ hour + ":" + minute,
             [
                 {
                     text: I18n.t("ALERT_CLOSE_TEXT"),
