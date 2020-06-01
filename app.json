@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "newIcoapp2",
-    "slug": "newIcoapp2",
+    "name": "IcoApp",
+    "slug": "IcoApp",
     "platforms": [
       "ios",
       "android",
