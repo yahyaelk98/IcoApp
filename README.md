@@ -75,6 +75,23 @@ expo start
 ```
 * Seleccioanr la opción **Run on Android device/emulator.
 
+## Exportar la app 📦
+Para probar realmente este proyecto, una vez lo tengamos instalado, podemos prodecer a exportarlo como una apk.
+* Exportarlo como una apk en **Android**
+```
+expo build:android
+```
+* Exportarlo como una apk en **IOS**
+```
+expo build:ios
+```
+Nos preguntará si la queremos exportar como apk para desarrollo o como una apk optimizada para la PlayStore/AppleStore:
+* apk - Build a package to deploy to the store or install directly on Android devices
+* app-bundle - Build an optimized bundle for the store
+
+Escogemos la primera opción en nuestro caso.
+
+Este comando una vez completado nos abrirá la página de **Expo** donde nos saldrá nuestro proyecto en cola, una vez listo nos saldrá la opción de descargar y lo podremos instalar en nuestros dispositivos.
 
 ## La app se ha construido con 🛠️
 
@@ -88,8 +105,7 @@ expo start
 
 ## Wiki 📖
 
-En proceso
-
+Este proyecto no tiene una wiki especifica que no sean los comentarios dentro del código.
 
 ## Autores ✒️
 
@@ -101,7 +117,7 @@ En proceso
 
 ## Licencia 📄
 
-Este proyecto está bajo la Licencia **Aun no lo sabemos**
+Este proyecto está bajo la **Licencia de software de semi libre**
 
 ## Expresiones de Gratitud 🎁
 
