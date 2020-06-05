@@ -109,8 +109,8 @@ Este proyecto no tiene una wiki especifica que no sean los comentarios dentro de
 
 ## Autores ✒️
 
-* **Manel Ferrer** - [github](https://github.com/wachipurry)
-* **Javier Martin** - [github](https://github.com/manyf00)
+* **Manel Ferrer** - [github](https://github.com/manyf00)
+* **Javier Martin** - [github](https://github.com/wachipurry)
 * **Yahya El Kajouai** - [github](https://github.com/yahyaelk)
 
 
